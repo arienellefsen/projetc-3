@@ -1,37 +1,63 @@
 const passport = require('passport');
 
 module.exports = function(app) {
+
     //Route login page
-    app.get('/', function(req, res) {
+    app.get('/', ensureAuthenticated, function(req, res) {
+        res.redirect('index.html');
+        console.log('Log Status: ' + logStatus.logStatus);
+    });
+
+    app.get('/dashboard', ensureAuthenticated, function(req, res) {
         if (req.isAuthenticated()) {
             isLog = true;
-        } else {
-            isLog = false;
+            logStatus = {
+                logStatus: isLog
+            };
+            res.render('dashboard', logStatus);
         }
-        let logData = {
-            logStatus: isLog
-        };
-        console.log('logData' + logData.logStatus);
-
-        res.render('index', logData);
     });
+
+    app.get('/favorite-places', ensureAuthenticated, function(req, res) {
+        res.render('favorite');
+    });
+
+    app.get('/my-pacs', ensureAuthenticated, function(req, res) {
+        res.render('my-packs');
+    });
+
+
 
     //Route account page
     app.get('/account', ensureAuthenticated, function(req, res) {
-        let userId = req.user.id;
+        let userId = req.user;
+
+        console.log(userId._json);
+        console.log(userId._json.gender);
+        var email = userId._json.emails.length;
+
+        for (var i = 0; i < email; i++) {
+            console.log('Email: ' + userId._json.emails[i].value);
+        }
+        let emails = 'test';
+        let images = userId._json.image.url;
         let name = req.user.displayName;
-        let emails = req.user.emails;
-        let images = req.user.picture;
+        let fullName = userId._json.displayName;
 
         let userData = {
             userId: userId,
-            name: name
+            name: fullName,
+            email: emails,
+            image: images
         };
-        console.log(userId + ' ' + name + ' ' + emails + ' ' + '' + images);
+        console.log('email: ' + userData.email);
+        console.log('images: ' + images);
+
+        console.log('obj:' + userData.image);
         res.render('account', { userData });
     });
 
-    app.get('/login', function(req, res) {
+    app.get('/login', ensureAuthenticated, function(req, res) {
         res.render('login', { user: req.user });
     });
 
@@ -54,18 +80,18 @@ module.exports = function(app) {
     //   which, in this example, will redirect the user to the home page.
     app.get('/auth/google/callback',
         passport.authenticate('google', {
-            successRedirect: '/',
-            failureRedirect: '/login'
+            successRedirect: '/dashboard',
+            failureRedirect: '/'
         }));
 
     app.get('/logout', function(req, res) {
         req.logout();
-        res.redirect('/');
+        res.redirect('index.html');
     });
 
     function ensureAuthenticated(req, res, next) {
         if (req.isAuthenticated()) { return next(); }
-        res.redirect('/login');
+        res.redirect('index.html');
     }
 
 };
