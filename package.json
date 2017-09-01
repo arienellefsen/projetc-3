@@ -1,0 +1,41 @@
+{
+    "name": "Pac",
+    "version": "0.1.6",
+    "description": "Add your favorite places in one single app to share with your friends using gmail account ",
+    "main": "./lib/oauth2.js",
+    "dependencies": {
+        "passport-oauth2": "^1.1.2"
+    },
+    "devDependencies": {
+        "body-parser": "^1.17.2",
+        "connect-redis": "^3.3.0",
+        "cookie-parser": "^1.4.3",
+        "ejs": "^2.5.7",
+        "express": "^4.15.4",
+        "express-session": "^1.15.5",
+        "passport": "^0.4.0",
+        "passport-google-oauth2": "^0.1.6",
+        "vows": "^0.8.0",
+        "bcrypt-nodejs": "0.0.3",
+        "browser-sync": "^2.18.13",
+        "express": "^4.15.2",
+        "express-handlebars": "^3.0.0",
+        "method-override": "^2.3.8",
+        "morgan": "^1.8.2",
+        "mysql": "^2.13.0",
+        "sequelize": "^3.30.4"
+    },
+    "keywords": [
+        "auth",
+        "google",
+        "google+",
+        "passportjs",
+        "oauth2"
+    ],
+    "author": "Ariene, Xiaoying, Kalpana",
+    "license": "ISC",
+    "bugs": {
+        "url": ""
+    },
+    "homepage": ""
+}

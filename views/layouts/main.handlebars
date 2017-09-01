@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+	<meta charset='UTF-8'>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+	<link rel='stylesheet' type='text/css' href='/assets/css/style.css'>
+	<title>Family Fun</title>
+</head>
+<body>
+<header>
+
+<div class="container">
+  <div class="row">
+    <div class="col-sm-3 col-md-3">
+		<h3><a href="/">Logo</a></h3>
+    </div class="">
+
+
+<div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
+
+<div class="nav-top">
+					<ul class="login">
+					
+					 </ul>
+                </div>
+
+                {{# if logStatus}}
+                <div class="nav-top">
+					<ul class="login">
+					<li><a href="/">Home</a></li>
+             		 <li><a href="/account">Account</a></li>
+					  <li><a href="/logout">Logout</a></li>
+					 </ul>
+                </div>
+                 {{else}}
+               <div class="nav-top">
+				   	<ul class="login">
+					<li><a href="/">Home</a></li>
+					<a href="/auth/google" class="btn btn-danger"><span class="fa fa-google-plus"></span> Google</a>
+					</ul>
+            	</div>
+                {{/if}}
+                </p>
+            </div>
+        </div>
+	</div>
+</div>	
+
+</header>
+
+<div class="container">
+  <div class="row">
+    <div class="col-sm-3 col-md-3">
+
+	{{{body}}}
+
+	</div>
+		</div>
+			</div>
+
+
+<footer>
+<h1> footer </h1>
+</footer>	
+</body>
+</html>
