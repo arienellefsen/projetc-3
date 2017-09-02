@@ -26,6 +26,10 @@ module.exports = function(app) {
         res.render('my-packs');
     });
 
+    app.get('/dash', ensureAuthenticated, function(req, res) {
+        res.redirect('dash.html');
+    });
+
 
 
     //Route account page
