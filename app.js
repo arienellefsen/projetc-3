@@ -17,8 +17,11 @@ const express = require('express'),
 const GOOGLE_CLIENT_ID = "250337484083-nt77d1ism43vtfpmg58oj5rr51g4gj3m.apps.googleusercontent.com",
     GOOGLE_CLIENT_SECRET = "nX4Z13iFtfH7aKAbmky8FIdd";
 
+var mongoose = require("mongoose");
+// Set mongoose to leverage built in JavaScript ES6 Promises
+mongoose.Promise = Promise;
 
-
+var apirouter = require('./controllers/dataapis');
 
 // Passport session setup.
 //   To support persistent login sessions, Passport needs to be able to
@@ -61,6 +64,7 @@ passport.use(new GoogleStrategy({
 ));
 
 
+
 // Configure Views using handlebars
 app.engine("handlebars", exphbs({ defaultLayout: "main" }));
 app.set("view engine", "handlebars");
@@ -88,6 +92,24 @@ app.use(passport.session());
 
 //Call controllers
 require('./controllers/routes.js')(app, passport);
+
+// Configure api path
+app.use('/api', apirouter);
+
+// Database configuration with mongoose
+// Here we find an appropriate database to connect to, defaulting to
+// localhost if we don't find one.
+var dburistring = process.env.MONGODB_URI || process.env.MONGOHQ_URL || 'mongodb://localhost/pacs';
+
+// Makes connection asynchronously.  Mongoose will queue up database
+// operations and release them when the connection is complete.
+mongoose.connect(dburistring, function(err, res) {
+    if (err) {
+        console.log('ERROR connecting to: ' + dburistring + '. ' + err);
+    } else {
+        console.log('Succeeded connected to: ' + dburistring);
+    }
+});
 
 //Create server
 app.listen(PORT, function() {
