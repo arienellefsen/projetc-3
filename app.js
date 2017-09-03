@@ -6,6 +6,7 @@ const express = require('express'),
     util = require('util'),
     bodyParser = require('body-parser'),
     cookieParser = require('cookie-parser'),
+    cors = require('cors'),
     session = require('express-session'),
     RedisStore = require('connect-redis')(session),
     GoogleStrategy = require('passport-google-oauth2').Strategy,
@@ -15,6 +16,9 @@ const express = require('express'),
 // https://code.google.com/apis/console/
 const GOOGLE_CLIENT_ID = "250337484083-nt77d1ism43vtfpmg58oj5rr51g4gj3m.apps.googleusercontent.com",
     GOOGLE_CLIENT_SECRET = "nX4Z13iFtfH7aKAbmky8FIdd";
+
+
+
 
 // Passport session setup.
 //   To support persistent login sessions, Passport needs to be able to
@@ -56,12 +60,12 @@ passport.use(new GoogleStrategy({
     }
 ));
 
+
 // Configure Views using handlebars
 app.engine("handlebars", exphbs({ defaultLayout: "main" }));
 app.set("view engine", "handlebars");
 app.set('views', __dirname + '/views');
 app.use(express.static(__dirname + '/public'));
-
 // Adding Cookie Parser
 app.use(cookieParser());
 app.use(bodyParser.json());
@@ -80,6 +84,7 @@ app.use(session({
 //Initialize passport
 app.use(passport.initialize());
 app.use(passport.session());
+
 
 //Call controllers
 require('./controllers/routes.js')(app, passport);
