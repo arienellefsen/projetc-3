@@ -2,13 +2,18 @@ const passport = require('passport');
 
 module.exports = function(app) {
 
+    app.use(function(req, res, next) {
+        res.header("Access-Control-Allow-Origin", "*");
+        res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+        next();
+    });
     //Route login page
-    app.get('/', ensureAuthenticated, function(req, res) {
+    app.get('/', ensureAuthenticated, function(req, res, next) {
         res.redirect('index.html');
         console.log('Log Status: ' + logStatus.logStatus);
     });
 
-    app.get('/dashboard', ensureAuthenticated, function(req, res) {
+    app.get('/dashboard', ensureAuthenticated, function(req, res, next) {
         if (req.isAuthenticated()) {
             isLog = true;
             logStatus = {
@@ -18,22 +23,20 @@ module.exports = function(app) {
         }
     });
 
-    app.get('/favorite-places', ensureAuthenticated, function(req, res) {
+    app.get('/favorite-places', ensureAuthenticated, function(req, res, next) {
         res.render('favorite');
     });
 
-    app.get('/my-pacs', ensureAuthenticated, function(req, res) {
+    app.get('/my-pacs', ensureAuthenticated, function(req, res, next) {
         res.render('my-packs');
     });
 
-    app.get('/dash', ensureAuthenticated, function(req, res) {
+    app.get('/dash', ensureAuthenticated, function(req, res, next) {
         res.redirect('dash.html');
     });
 
-
-
     //Route account page
-    app.get('/account', ensureAuthenticated, function(req, res) {
+    app.get('/account', ensureAuthenticated, function(req, res, next) {
         let userId = req.user;
 
         console.log(userId._json);
@@ -61,7 +64,7 @@ module.exports = function(app) {
         res.render('account', { userData });
     });
 
-    app.get('/login', ensureAuthenticated, function(req, res) {
+    app.get('/login', ensureAuthenticated, function(req, res, next) {
         res.render('login', { user: req.user });
     });
 
@@ -88,7 +91,7 @@ module.exports = function(app) {
             failureRedirect: '/'
         }));
 
-    app.get('/logout', function(req, res) {
+    app.get('/logout', function(req, res, next) {
         req.logout();
         res.redirect('index.html');
     });
