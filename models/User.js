@@ -19,7 +19,11 @@ var UserSchema = new Schema({
     },
     profileStatement: {
         type: String
-    }
+    },   // one Chat has many comment's ObjectId, ref refers to the Comment model
+    pacs: [{
+        type: Schema.Types.ObjectId,
+        ref: "Pac"
+    }]
 });
 
 // Create the User model with the UserSchema

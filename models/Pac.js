@@ -32,14 +32,12 @@ var PacSchema = new Schema({
         type: Date,
         default: Date.now
     },
+    googlePlaceId: {
+        type: String
+    },
     chatId: {
         type: Schema.Types.ObjectId,
         ref: "Chat"
-    },
-    userId: {
-        type: Schema.Types.ObjectId,
-        ref: "User",
-        required: true
     }
 });
 

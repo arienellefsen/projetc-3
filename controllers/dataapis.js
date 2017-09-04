@@ -10,8 +10,87 @@ var User = require("./../models/User.js");
 
 //var moment = require('moment')
 
+// add a User
+// user id required in req
+apirouter.post("/user/", function(req, res) {
+        console.log("add: " + req.body.user);
+        console.log("user email: " + req.body.user.emailAddress);
+        //assume req has item which is with JSON data similar to PAC
+        // Save these results in an object
+
+        var reqEmailAddress = req.body.user.emailAddress;
+
+        User.findOne({
+             emailAddress: reqEmailAddress
+        }) // ..and populate all of the pacs for the user
+        .populate({
+            path: "pacs",
+            options: {
+                sort: [{
+                    "createdAt": -1
+                }]
+            }
+        }).exec(function(error, doc) {
+                if (error) {
+                    console.log(error);
+                } else {
+                    if (!doc) {//cannot use doc.length===0 for findOne function
+                        //save the User
+                        console.log("add: " + reqEmailAddress);
+                        
+                        // Using our User model, create a new entry
+                        // This effectively passes the result object to the entry
+                        var entry = new User(req.body.user);
+
+                        // Now, save that entry to the db
+                        entry.save(function(err, doc) {
+                            if (err) {
+                                console.log(err);
+                            } else {
+                                 res.json(doc);
+                            }
+                        });
+                    }
+                    else {
+                        res.json(doc);
+                    //     console.log("find existing record with: " + articleStoryId);
+                    }
+            }
+        }); //end lookup storyId and save record if it is a new story
+});
+
+// get a User
+// user id required in req
+apirouter.get("/users/:id", function(req, res) {
+        console.log("get: " + req);
+        //assume req has item which is with JSON data similar to PAC
+        User.findOne({
+            "_id": req.params.id
+        })
+        .populate({
+            path: "pacs",
+            options: {
+                sort: [{
+                    "createdAt": -1
+                }]
+            }
+        })
+        // now, execute our query
+        .exec(function(error, doc) {
+            // Log any errors
+            if (error) {
+                console.log(error);
+            }
+            // Otherwise, send the doc to the browser as a json object
+            else {
+                res.json(doc);
+            }
+        });
+});
+
+
 // This will get the Pacs from the mongoDB
-apirouter.get("/users/:userId/pacs", function(req, res) {
+apirouter.get("/users/:id/pacs", function(req, res) {
     // Grab at most 15 Pacs orded with the most recent first from DB
     Pac.find({}).sort({
         date: -1
@@ -93,43 +172,81 @@ apirouter.get("/chats/:id", function(req, res) {
         });
 });
 
-// Add a User
-// user id required in req
-apirouter.post("/user", function(req, res) {
-        console.log("add: " + req);
-        //assume req has item which is with JSON data similar to PAC
-        // Save these results in an object
-        var entry = new User(req.params.user);
-
-        // Now, save that entry to the db
-        entry.save(function(err, doc) {
-            if (err) {
-                console.log(err);
-            } else {;
-                res.json(doc);
-            }
-        });
-});
-
 // Add a Pac
 // user id required in req
 apirouter.post("/pac", function(req, res) {
-        console.log("add: " + req);
+        console.log("add: " + req.body.pac);
+        console.log("to: " + req.body.userid);
+        console.log("place: " + req.body.place);
         //assume req has item which is with JSON data similar to PAC
         // Save these results in an object
-        var newpac = {};
-        newpac.title = req.params.item.title.trim();
-        var entry = new Pac(newpac);
+
+        var reqGooglePlaceId = req.body.place.googlePlaceId;
+           Place.findOne({
+             googlePlaceId: reqGooglePlaceId
+        }) // ..and populate all of the pacs for the user
+        .exec(function(error, doc) {
+                if (error) {
+                    console.log(error);
+                } else {
+                    if (!doc) {//cannot use doc.length===0 for findOne function
+                        //save the User
+                        console.log("add: " + reqGooglePlaceId);
+                        
+                        // Using our User model, create a new entry
+                        // This effectively passes the result object to the entry
+                        var entry = new Place(req.body.place);
+
+                        // Now, save that entry to the db
+                        entry.save(function(err, doc) {
+                            if (err) {
+                                console.log(err);
+                            } else {
+                                 return res.json(addPac(req.body.pac, doc._id, req.body.userid));
+                            }
+                        });
+                    }
+                    else {
+                        return res.json(addPac(req.body.pac, doc._id, req.body.userid));
+                    //     console.log("find existing record with: " + articleStoryId);
+                    }
+            }
+        }); //end lookup storyId and save record if it is a new story
+
+
+});
+
+function addPac(pac, placeid, userid){
+     pac.detailsId = placeid;
+     var entry = new Pac(pac);
 
         // Now, save that entry to the db
         entry.save(function(err, doc) {
             if (err) {
                 console.log(err);
-            } else {;
-                res.json(doc);
+                return error
+            } else {
+                 // Use the user id to find and update it's pacs
+                User.findOneAndUpdate({
+                    "_id": userid
+                }, {
+                    $push: {
+                        "pacs": doc._id
+                    }
+                })
+                // Execute the above query
+                .exec(function(err, doc) {
+                    // Log any errors
+                    if (err) {
+                        console.log(err);
+                        return err
+                    } else {
+                        return doc
+                    }
+                });
             }
         });
-});
+}
 
 // Update a PAC
 // user id required in req
@@ -181,7 +298,5 @@ apirouter.post("/chats/comment", function(req, res) {
         }
     });
 });
-
-
 
 module.exports = apirouter;
