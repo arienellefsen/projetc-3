@@ -80,9 +80,14 @@ html {
 .btn-login {
     background-color: #DA2027;
     padding: 10px;
-    width: 250px;
+    width: 270px;
     color: #fff;
     transition: background-color 0.5s ease;
+}
+
+span.fa-google-plus {
+    background-image: url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/14082/icon_google.png') 6px 6px no-repeat;
+    width: 150px;
 }
 
 .btn-login:hover {
@@ -150,4 +155,158 @@ html {
     position: relative;
     top: -40px;
     left: 589px;
+}
+
+ul {
+    margin: 0;
+    padding: 0;
+}
+
+li {
+    list-style: none;
+}
+
+.red {
+    color: #F16B6F;
+}
+
+.logo {
+    background-color: #08748a;
+    color: #eee;
+    left: 0;
+    top: 0;
+    z-index: 1200;
+    padding: 10px;
+    font-family: 'Josefin Sans', sans-serif;
+    font-size: 30px;
+    text-align: center;
+    ;
+}
+
+.bg-slideshow,
+.bg-slideshow:after {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0px;
+    left: 0px;
+    z-index: 0;
+}
+
+.bg-slideshow:after {
+    content: '';
+    background: linear-gradient(rgba(0, 130, 170, 0), rgba(0, 130, 170, 1));
+}
+
+.bg-slideshow li .image {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    color: transparent;
+    background-size: cover;
+    background-position: 50% 50%;
+    background-repeat: none;
+    opacity: 0;
+    z-index: 0;
+    animation: imageAnimation 18s linear infinite 0s;
+}
+
+.bg-slideshow li div {
+    z-index: 1000;
+    position: absolute;
+    top: 340px;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    opacity: 0;
+    color: #fff;
+    animation: titleAnimation 18s linear infinite 0s;
+    justify-content: center;
+    -ms-align-items: center;
+    align-items: center;
+}
+
+.bg-slideshow li div h3 {
+    font-family: 'BebasNeueRegular', 'Arial Narrow', Arial, sans-serif;
+    font-size: 240px;
+    padding: 0;
+    line-height: 200px;
+}
+
+.bg-slideshow li:nth-child(1) .image {
+    background-image: url('/assets/img/place4.jpg');
+}
+
+.bg-slideshow li:nth-child(2) .image {
+    background-image: url('/assets/img/place2.jpg');
+    animation-delay: 6s;
+}
+
+.bg-slideshow li:nth-child(3) .image {
+    background-image: url('/assets/img/place3.jpg');
+    animation-delay: 12s;
+}
+
+.bg-slideshow li:nth-child(2) div {
+    animation-delay: 6s;
+}
+
+.bg-slideshow li:nth-child(3) div {
+    animation-delay: 12s;
+}
+
+@keyframes imageAnimation {
+    0% {
+        opacity: 0;
+        animation-timing-function: ease-in;
+    }
+    8% {
+        opacity: 1;
+        animation-timing-function: ease-out;
+    }
+    27% {
+        opacity: 1
+    }
+    45% {
+        opacity: 0
+    }
+    100% {
+        opacity: 0
+    }
+}
+
+@keyframes titleAnimation {
+    0% {
+        opacity: 1;
+    }
+    8% {
+        opacity: 1;
+    }
+    27% {
+        opacity: 1
+    }
+    45% {
+        opacity: 1
+    }
+    100% {
+        opacity: 1
+    }
+}
+
+.no-cssanimations .cb-slideshow li .image {
+    opacity: 1;
+}
+
+@media screen and (max-width: 1140px) {
+    .bg-slideshow li div h3 {
+        font-size: 140px
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .bg-slideshow li div h3 {
+        font-size: 80px
+    }
 }
