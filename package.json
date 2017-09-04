@@ -4,15 +4,17 @@
   "description": "Add your favorite places in one single app to share with your friends using gmail account ",
   "main": "./lib/oauth2.js",
   "dependencies": {
-    "passport-oauth2": "^1.1.2",
     "axios": "^0.12.0",
     "body-parser": "^1.15.2",
     "express": "^4.14.0",
+    "gplaces": "^1.0.13",
     "mongoose": "^4.5.1",
     "morgan": "^1.7.0",
+    "passport-oauth2": "^1.1.2",
     "react": "^0.14.3",
     "react-dom": "^0.14.3",
     "react-native-cli": "^2.0.1",
+    "react-places-autocomplete": "^5.4.3",
     "react-router": "^4.1.2",
     "react-router-dom": "^4.1.2",
     "request": "^2.81.0"
@@ -38,6 +40,7 @@
     "mysql": "^2.13.0",
     "passport": "^0.4.0",
     "passport-google-oauth2": "^0.1.6",
+    "react-google-places-component": "0.0.5",
     "sequelize": "^3.30.4",
     "vows": "^0.8.0",
     "webpack": "^1.13.1"

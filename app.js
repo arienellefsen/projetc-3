@@ -12,6 +12,7 @@ const express = require('express'),
     GoogleStrategy = require('passport-google-oauth2').Strategy,
     PORT = process.env.PORT || 3000;
 
+
 // API Access link for creating client ID and secret:
 // https://code.google.com/apis/console/
 const GOOGLE_CLIENT_ID = "250337484083-nt77d1ism43vtfpmg58oj5rr51g4gj3m.apps.googleusercontent.com",
@@ -53,7 +54,6 @@ passport.use(new GoogleStrategy({
     function(request, accessToken, refreshToken, profile, done) {
         // asynchronous verification, for effect...
         process.nextTick(function() {
-
             // To keep the example simple, the user's Google profile is returned to
             // represent the logged-in user.  In a typical application, you would want
             // to associate the Google account with a user record in your database,
@@ -89,6 +89,17 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
+var allowCrossDomain = function(req, res, next) {
+    if ('OPTIONS' == req.method) {
+        res.header('Access-Control-Allow-Origin', '*');
+        res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,PATCH,OPTIONS');
+        res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
+        res.send(200);
+    } else {
+        next();
+    }
+};
+app.use(allowCrossDomain);
 
 //Call controllers
 require('./controllers/routes.js')(app, passport);
