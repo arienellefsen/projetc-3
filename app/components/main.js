@@ -1,6 +1,5 @@
 import React from 'react';
 import Create from './Create';
-import Map from './Map';
 
 const helpers = require("./utils/helpers");
 
@@ -10,6 +9,7 @@ class Main extends React.Component {
     return (
       <div>
         <Create />
+        <Map />
        </div>
     )
   }
