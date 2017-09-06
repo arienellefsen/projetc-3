@@ -400,9 +400,10 @@ body>.navbar-collapse .nav li:hover>a {
 
 .sidebar .nav li.active>a,
 body>.navbar-collapse .nav li.active>a {
-    color: #FFFFFF;
+    color: red !important;
     opacity: 1;
-    background: rgba(255, 255, 255, 0.23);
+    background: red;
+    border: 1px solid red;
 }
 
 .sidebar .nav li.separator,
