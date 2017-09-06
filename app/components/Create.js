@@ -16,8 +16,8 @@ class Create extends React.Component {
 				this.getPlaces = this.getPlaces.bind(this);
 		}
 
-		map: null;
-		service: null;
+		map = null;
+		service = null;
 
 		//Create a pac function to display the name and the search field
 		handleClick = (e) => {

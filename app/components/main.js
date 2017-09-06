@@ -9,8 +9,7 @@ class Main extends React.Component {
     return (
       <div>
         <Create />
-        <Map />
-       </div>
+      </div>
     )
   }
 }
