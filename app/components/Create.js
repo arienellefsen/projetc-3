@@ -1,12 +1,7 @@
 import React from 'react';
 var helpers = require("./utils/helpers");
+import Map from './Map';
 
-/*
-var Create = {
-	map: null,
-	service: null
-};
-*/
 
 class Create extends React.Component {
 		constructor(props) {
@@ -16,8 +11,8 @@ class Create extends React.Component {
 				this.getPlaces = this.getPlaces.bind(this);
 		}
 
-		map: null;
-		service: null;
+		map = null;
+		service = null;
 
 		//Create a pac function to display the name and the search field
 		handleClick = (e) => {
@@ -50,6 +45,22 @@ class Create extends React.Component {
 				this.service = new google.maps.places.PlacesService(this.map);
 				this.service.textSearch(request, (places) => {
 						console.log(places);
+						console.log(places[0].name);
+						console.log(places[0].formatted_address);
+						console.log(places[0].place_id);
+						console.log(places[0].reference);
+
+						var lat = places[0].geometry.location.lat();
+						var long = places[0].geometry.location.lng();
+
+						console.log('lat: ' + lat);
+						console.log('long: ' + long);
+
+
+						var place = document.getElementById('place');
+						place.innerHTML += "<h2>"+places[0].name+"</h2>" +"<p>" +places[0].formatted_address+"</p><hr>" ;
+
+
 
 						if (typeof onDataReceived === 'function') {
 								onDataReceived(places);
@@ -59,27 +70,21 @@ class Create extends React.Component {
 
 		render() {
 				return (
-						<div className="row">
-								<div className="col-xs-10 col-sm-10 col-md-12"> 
-										<button onClick={this.handleClick} className="create-button" >
-												<i className="pe-7s-plus icon-create"></i>
-												Create a PAC
-										</button>
-								</div>
-						<div className="col-xs-10 col-sm-10 col-md-12"> 
-										<form ref={(input) => this.searchForm = input} className={this.myClass} onSubmit={(e) => this.getPlaces(e)}>
-												<input ref={(input) => this.name = input} type="text" placeholder="Add a name to you PAC" />
-												<span><input ref={(input) => this.place = input} type="text" placeholder="Place" /><button className="add-button"> + Add</button></span>
-
-												<button type="submit" >
-														Search
-												</button>
+						<div>
+								
+										<form ref={(input) => this.searchForm = input}  onSubmit={(e) => this.getPlaces(e)}>
+												<span><input ref={(input) => this.place = input} type="text" placeholder="Place" className="searchField" /><button type="submit" >
+															Search
+														</button>
+												</span>
 										</form>
-								</div>
+												<div id="place" className="placeResult"></div>
+
+
 
 								{/* We will render our map into this empty div! */}
-								<div id="map"></div>
 						</div>
+						
 				)
 			}
 	}

@@ -44,7 +44,7 @@
     "react-google-places-component": "0.0.5",
     "sequelize": "^3.30.4",
     "vows": "^0.8.0",
-    "webpack": "^1.13.1"
+    "webpack": "^2.0.0"
   },
   "keywords": [
     "auth",
