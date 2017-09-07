@@ -1,13 +1,13 @@
 import React from 'react';
 
 class Map extends React.Component {
+   
   constructor(props) {
 				super(props);
 				this.initMap = this.initMap.bind(this);
     }
     
-   
-
+  
     render() {
       return (
         <div>
