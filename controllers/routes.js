@@ -5,7 +5,7 @@ module.exports = function(app) {
 
     //Route login page
     app.get('/', ensureAuthenticated, function(req, res, next) {
-        res.redirect('index.html');
+        res.redirect('login.html');
         console.log('Log Status: ' + logStatus.logStatus);
     });
 
@@ -89,12 +89,12 @@ module.exports = function(app) {
 
     app.get('/logout', function(req, res, next) {
         req.logout();
-        res.redirect('index.html');
+        res.redirect('login.html');
     });
 
     function ensureAuthenticated(req, res, next) {
         if (req.isAuthenticated()) { return next(); }
-        res.redirect('index.html');
+        res.redirect('login.html');
     }
 
 };
