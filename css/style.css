@@ -1,15 +1,8 @@
 h1 {
-    color: purple;
-    font-size: 12px;
-    font-weight: bold;
-}
+  color: purple;
+  font-size: 12px;
+  font-weight: bold; }
 
-h2 {
-    background: purple;
-}
-
-h3 {
-    background: purple;
-    font-size: 12px;
-    font-weight: bold;
-}
+h4 {
+  background: purple;
+  font-weight: bold; }
