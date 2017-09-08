@@ -3,7 +3,10 @@ import Create from './Create';
 // import Map from './Map';
 
 const helpers = require("./utils/helpers");
-
+const US_CENTER_POSITION = {
+  lat: 41.850033,
+  lng: -87.6500523
+};
 class Main extends React.Component {
   constructor(props) {
     super(props);
@@ -26,7 +29,7 @@ class Main extends React.Component {
     }
 
     */
-
+  this.addMapMarker = this.addMapMarker.bind(this);
     this.state = {
       title: '',
       pictureURL: '', // maybe
@@ -44,9 +47,8 @@ class Main extends React.Component {
     console.log('mount!');
     
     this.map = new google.maps.Map(document.getElementById('map'), {
-     
-      zoom: 2,
-      center: { lat: -25.363, lng: 131.044 }
+          zoom: 3,
+          center: US_CENTER_POSITION
     });
 
     this.service = new google.maps.places.PlacesService(this.map);
@@ -65,10 +67,13 @@ class Main extends React.Component {
     //const marker = new google.maps.Marker();
     var marker = new google.maps.Marker({
 
-         position: {lat: place.geometry.location.lat(),lng: place.geometry.location.lng() },
+         position: place.geometry.location,
           map: this.map
          });
     // add a marker to this.map
+    //reposition the map to show the marked place
+        this.map.panTo(place.geometry.location);
+        this.map.setZoom(8);
   }
 
   render() {
