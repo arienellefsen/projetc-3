@@ -7,6 +7,7 @@
     "axios": "^0.12.0",
     "body-parser": "^1.15.2",
     "express": "^4.14.0",
+    "google-maps-react": "^1.1.0",
     "gplaces": "^1.0.13",
     "mongoose": "^4.5.1",
     "morgan": "^1.7.0",

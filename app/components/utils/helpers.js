@@ -12,17 +12,11 @@ const googleApi = {
 
 // Helper functions for making API Calls
 var helper = {
+
     // This function serves our purpose of running the query to geolocate.
-    runQuery: function(place) {
+    initMap: function() {
         console.log('called function');
-        axios({
-                method: 'get',
-                url: googleApi.url,
-                responseType: 'json'
-            })
-            .then(function(response) {
-                console.log('add: ' + reponse);
-            });
+
     }
 };
 

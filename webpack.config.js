@@ -25,5 +25,5 @@ module.exports = {
     },
     // This lets us debug our react code in chrome dev tools. Errors will have lines and file names
     // Without this the console says all errors are coming from just coming from bundle.js
-    devtool: "eval-source-map"
+    devtool: "#cheap-module-inline-source-map"
 };
