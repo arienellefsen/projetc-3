@@ -13,6 +13,7 @@ class Main extends React.Component {
 
     this.getMap = this.getMap.bind(this);
     this.getService = this.getService.bind(this);
+    this.removePlace = this.removePlace.bind(this);
 
     /*
     A place looks like:
@@ -33,7 +34,7 @@ class Main extends React.Component {
     this.state = {
       title: '',
       pictureURL: '', // maybe
-      places: [],
+      places: []
     };
   }
 
@@ -56,6 +57,8 @@ class Main extends React.Component {
 
   componentDidUpdate(prevProps) {
     console.log('update!');
+
+
   }
 
   componentWillUnmount() {
@@ -66,14 +69,35 @@ class Main extends React.Component {
 
     //const marker = new google.maps.Marker();
     var marker = new google.maps.Marker({
-
          position: place.geometry.location,
-          map: this.map
+         map: this.map
          });
+         
     // add a marker to this.map
     //reposition the map to show the marked place
         this.map.panTo(place.geometry.location);
         this.map.setZoom(8);
+
+        var contentString = '<div id="content">'+
+      '<h3>'+place.name+'</h3>'+
+      '<p>' + place.formatted_address+'</p>'
+      '</div>';
+
+
+    //Add click info window 
+        google.maps.event.addListener(marker, 'click', function() {
+        this.infowindow = new google.maps.InfoWindow();
+          this.infowindow.setContent(contentString);
+          this.infowindow.open(this.map, this);
+        });
+      
+  }
+
+
+  removePlace(e){
+    console.log('remove place');
+  
+
   }
 
   render() {
@@ -96,8 +120,28 @@ class Main extends React.Component {
           </div>
           <div className="col-md-6">
             <div>
-                <h1> Map</h1>
                 <div id="map"></div>
+                <div id="place" className="placeResult">
+          <h1> Places Added to Map </h1>
+					{this.state.places.map((place) => {
+						//
+						//
+						//
+						console.log("place: " ,place);
+						return (
+							<div key={place.id}>
+								<h2>{place.name}</h2>
+								<p>{place.formatted_address}</p>
+
+								<button
+									onClick={() => {this.removePlace(place)}}
+								>
+									Remove from map
+								</button>
+							</div>
+						);
+					})}
+				</div>
             </div>
           </div>
         </div>
