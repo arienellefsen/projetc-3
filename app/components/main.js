@@ -74,7 +74,21 @@ class Main extends React.Component {
     //reposition the map to show the marked place
         this.map.panTo(place.geometry.location);
         this.map.setZoom(8);
+
+        var contentString = '<div id="content">'+
+      '<h3>'+place.name+'</h3>'+
+      '<p>' + place.formatted_address+'</p>'
+      '</div>';
+
+       //Add click info window 
+       google.maps.event.addListener(marker, 'click', function() {
+        this.infowindow = new google.maps.InfoWindow();
+          this.infowindow.setContent(contentString);
+          this.infowindow.open(this.map, this);
+        });
+
   }
+  
 
   render() {
     // TODO: add input here bound to this.state.title
