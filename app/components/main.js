@@ -13,6 +13,8 @@ class Main extends React.Component {
 
     this.getMap = this.getMap.bind(this);
     this.getService = this.getService.bind(this);
+    this.removePlace = this.removePlace.bind(this);
+
 
     /*
     A place looks like:
@@ -88,6 +90,12 @@ class Main extends React.Component {
         });
 
   }
+
+  removePlace(e){
+    console.log('remove place');
+  
+
+  }
   
 
   render() {
@@ -112,6 +120,28 @@ class Main extends React.Component {
             <div>
                 <h1> Map</h1>
                 <div id="map"></div>
+                <div id="place" className="placeResult">
+          <h1> Places Added to Map </h1>
+					{this.state.places.map((place) => {
+						//
+						//
+						//
+						console.log("place: " ,place);
+						return (
+							<div key={place.id}>
+								<h2>{place.name}</h2>
+								<p>{place.formatted_address}</p>
+
+								<button
+									onClick={() => {this.removePlace(place)}}
+								>
+									Remove from map
+								</button>
+							</div>
+						);
+					})}
+				</div>
+
             </div>
           </div>
         </div>
