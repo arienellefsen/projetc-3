@@ -11,7 +11,8 @@ class Create extends React.Component {
 		this.getPlaces = this.getPlaces.bind(this);
 
 		this.state = {
-			places: []
+			places: [],
+			addedPlaces: []
 		}
 	}
 
@@ -108,7 +109,7 @@ class Create extends React.Component {
 								<button
 									onClick={() => {this.addPlace(place)}}
 								>
-									Add
+									Add map
 								</button>
 							</div>
 						);
