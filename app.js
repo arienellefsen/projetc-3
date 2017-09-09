@@ -24,6 +24,7 @@ mongoose.Promise = Promise;
 
 var apirouter = require('./controllers/dataapis');
 
+
 // Passport session setup.
 //   To support persistent login sessions, Passport needs to be able to
 //   serialize users into and deserialize users out of the session.  Typically,
@@ -105,7 +106,11 @@ app.use(allowCrossDomain);
 require('./controllers/routes.js')(app, passport);
 
 // Configure api path
-app.use('/api', apirouter);
+var apirouter2 = require('./controllers/dataApi2');
+//Changed to use ApiRouter2
+app.use('/api', apirouter2);
+
+
 
 // Database configuration with mongoose
 // Here we find an appropriate database to connect to, defaulting to

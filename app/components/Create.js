@@ -88,7 +88,10 @@ class Create extends React.Component {
 		return (
 			<div>
 				<form ref={(input) => this.searchForm = input} onSubmit={(e) => this.getPlaces(e)}>
-					<span><input ref={(input) => this.place = input} type="text" placeholder="Place" className="searchField" />
+					<br />
+					<span>Title:<input ref={(input) => this.title = input} type="text" placeholder="Add a title for you pac" className="searchField" /></span>
+					<span>Place:<input ref={(input) => this.place = input} type="text" placeholder="Place" className="searchField" />
+					
 						<button type="submit" >
 							Search
 						</button>

@@ -1,4 +1,5 @@
 const passport = require('passport');
+var Place2 = require("./../models/Place2.js");
 
 
 module.exports = function(app) {
@@ -20,7 +21,21 @@ module.exports = function(app) {
     });
 
     app.get('/favorite-places', ensureAuthenticated, function(req, res, next) {
-        res.render('favorite');
+        //res.render('favorite');
+        Place2.find({}).exec(function(err, doc) {
+
+            let pacData = {
+                pac: doc
+            }
+
+            if (err) {
+                console.log(err);
+            } else {
+                console.log(doc);
+                res.render('my-packs', { pacData });
+
+            }
+        });
     });
 
     app.get('/my-pacs', ensureAuthenticated, function(req, res, next) {

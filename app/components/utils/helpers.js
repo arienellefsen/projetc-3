@@ -6,17 +6,26 @@ const googleApi = {
     url: 'https://maps.googleapis.com/maps/api/place/textsearch/xml?query=restaurants+in+Sydney&key=AIzaSyD7ZhwbUi-N6KzufXETDFGoIgoP4spZplA&libraries=places'
 };
 
-//https://maps.googleapis.com/maps/api/place/textsearch/xml?query=restaurants+in+Sydney&key=YOUR_API_KEY
-
-
-
 // Helper functions for making API Calls
 var helper = {
-
-    // This function serves our purpose of running the query to geolocate.
-    initMap: function() {
-        console.log('called function');
-
+    // This function posts new articles to our database.
+    savePac: function(placeName, address, placeId) {
+        console.log('Save pac here');
+        var placesData = {
+            name: placeName,
+            address: address,
+            placeId: placeId
+        }
+        console.log('places data:' + placesData);
+        return axios.post('api/savePac', placesData)
+            .then(function(response) {
+                console.log(response);
+                return response;
+            })
+            .catch(function(error) {
+                console.log(error);
+                return error;
+            });
     }
 };
 
