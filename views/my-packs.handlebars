@@ -1,1 +1,7 @@
-<h1> my pacs </h1>
+<h1> Your saved Packs</h1>
+{{#each this.pacData}}
+    {{#each this}}  
+        <h1>{{this.name}}</h1>
+        <p>{{this.address}}</p>
+    {{/each}}
+{{/each}}

@@ -1,5 +1,7 @@
 import React from 'react';
 import Create from './Create';
+import Save from './Save';
+
 // import Map from './Map';
 
 const helpers = require("./utils/helpers");
@@ -84,18 +86,31 @@ class Main extends React.Component {
 
        //Add click info window 
        google.maps.event.addListener(marker, 'click', function() {
-        this.infowindow = new google.maps.InfoWindow();
+          this.infowindow = new google.maps.InfoWindow();
           this.infowindow.setContent(contentString);
           this.infowindow.open(this.map, this);
         });
 
   }
 
-  removePlace(e){
+  removePlace(e, index){
     console.log('remove place');
-  
+    var newplaces = this.state.places;
+
+    newplaces.splice(index, 1);
+
+    this.setState({
+      places: newplaces
+       });
 
   }
+
+  deleteMarkers() {
+        clearMarkers();
+        markers = [];
+      }
+
+      
   
 
   render() {
@@ -121,27 +136,26 @@ class Main extends React.Component {
                 <h1> Map</h1>
                 <div id="map"></div>
                 <div id="place" className="placeResult">
-          <h1> Places Added to Map </h1>
-					{this.state.places.map((place) => {
+                <h1> Places Added to Map </h1>
+					      {this.state.places.map((place, index) => {
 						//
 						//
 						//
 						console.log("place: " ,place);
 						return (
 							<div key={place.id}>
-								<h2>{place.name}</h2>
-								<p>{place.formatted_address}</p>
-
-								<button
-									onClick={() => {this.removePlace(place)}}
-								>
-									Remove from map
-								</button>
-							</div>
-						);
-					})}
-				</div>
-
+                  <h2>{place.name}</h2>
+                  <p>{place.formatted_address}</p>
+                  <button
+                    onClick={() => {this.removePlace(place, index)}}
+                  >
+                    Remove from map
+                  </button>
+                </div>
+                  );
+                })}
+				    </div>
+            <Save places={this.state.places} />
             </div>
           </div>
         </div>

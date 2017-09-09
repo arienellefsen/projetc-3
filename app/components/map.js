@@ -8,7 +8,6 @@ class Map extends React.Component {
     super(props);
   }
 
-
   render() {
     return (
       <div>
