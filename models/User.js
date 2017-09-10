@@ -15,7 +15,8 @@ var UserSchema = new Schema({
     },
     emailAddress: {
         type: String,
-        required: true
+        required: true,
+        unique: true
     },
     profileStatement: {
         type: String

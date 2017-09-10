@@ -7,25 +7,35 @@ var Schema = mongoose.Schema;
 var PlaceSchema = new Schema({
     name: {
         type: String,
+        required: true,
+        trim: true
+    },
+    lat: {
+        type: Number,
         required: true
+    },
+    lng: {
+        type: Number,
+        required: true
+    },
+    category: {
+        type: String,
+        default: "any" //park or coffeeshop etc
     },
     pictureURL: {
         type: String
     },
     address: {
-        type: String,
-        required: true
+        type: String
     },
     city: {
-        type: String,
-        required: true
+        type: String
     },
     state: {
         type: String
     },
     zipcode: {
-        type: String,
-        required: true
+        type: String
     },
     country: {
         type: String,
@@ -35,9 +45,13 @@ var PlaceSchema = new Schema({
         type: String
     },
     googlePlaceId: {
-        type: String
+        type: String//,
+       // unique: true cannot be useed as we might not be able to have google place id
     }
 });
+
+/*Defining indexes at the schema level is necessary when creating compound indexes.*/
+PlaceSchema.index({name: 1, lat: 1, lng: 1}, {name: 'myplace_index', unique: true }); // schema level
 
 // Create the Place model with the PlaceSchema
 var Place = mongoose.model("Place", PlaceSchema);
