@@ -43,6 +43,7 @@ class Main extends React.Component {
 
   map = null;
   service = null;
+  markers = null;
   
   getService () { return this.service; }
   getMap () { return this.map }
@@ -96,61 +97,61 @@ class Main extends React.Component {
   removePlace(e, index){
     console.log('remove place');
     var newplaces = this.state.places;
-
+    
     newplaces.splice(index, 1);
 
     this.setState({
       places: newplaces
        });
-
   }
 
-  deleteMarkers() {
-        clearMarkers();
-        markers = [];
-      }
-
-      
   
-
   render() {
     // TODO: add input here bound to this.state.title
     return (
       <div>
         <div className="row">
           <div className="col-md-6">
-            <Create 
-              getService={this.getService}
-              getMap={this.getMap}
-              addPlaceToPac={(place) => {
-                console.log('Adding place to parent Pac state: ', place)
-                this.addMapMarker(place);
-                this.setState({
-                  places: this.state.places.concat(place)
-                });
-              }}
-            />
+            <div className="card">
+              <div className="header">
+                  <h4 className="title">Create a Pac</h4>
+                    </div>
+                      <Create 
+                        getService={this.getService}
+                        getMap={this.getMap}
+                        addPlaceToPac={(place) => {
+                          console.log('Adding place to parent Pac state: ', place)
+                          this.addMapMarker(place);
+                          this.setState({
+                            places: this.state.places.concat(place)
+                          });
+                        }}
+                      />
+          </div>
           </div>
           <div className="col-md-6">
             <div>
-                <h1> Map</h1>
+            <div className="card">
                 <div id="map"></div>
+            </div>
+
                 <div id="place" className="placeResult">
-                <h1> Places Added to Map </h1>
+                <h1 className="title-map-saved"> Places Added </h1>
 					      {this.state.places.map((place, index) => {
-						//
-						//
-						//
-						console.log("place: " ,place);
-						return (
-							<div key={place.id}>
-                  <h2>{place.name}</h2>
-                  <p>{place.formatted_address}</p>
-                  <button
-                    onClick={() => {this.removePlace(place, index)}}
-                  >
-                    Remove from map
+                  
+                console.log("place: " ,place);
+                return (
+                  <div className="container-save-result">
+
+                  <div key={place.id}>
+                      <h2>{place.name}</h2>
+                      <p>{place.formatted_address}</p>
+                      <button className="button-add-map"
+                        onClick={() => {this.removePlace(place, index)}}
+                      >
+                    Remove
                   </button>
+                </div>
                 </div>
                   );
                 })}
