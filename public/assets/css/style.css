@@ -323,6 +323,14 @@
             height: 40px;
         }
         
+        input.title-form {
+            width: 85%;
+            margin-left: 20px;
+            margin-top: 40px;
+            height: 40px;
+            margin-bottom: -20px;
+        }
+        
         h2 {
             font-weight: bold;
             font-size: 18px !important;
@@ -332,4 +340,119 @@
         #map {
             height: 400px;
             width: 100%;
+            margin-top: 20px;
+        }
+        
+        span.field-text {
+            padding-left: 20px;
+            font-size: 16px;
+        }
+        
+        h1.titleApp {
+            font-size: 25px;
+            padding-left: 20px;
+            margin-bottom: -10px;
+            margin-top: 5px;
+        }
+        
+        button.btn-search {
+            padding: 10px;
+            position: absolute;
+            top: 156px;
+            float: right;
+            right: 74px;
+            background: #6FC7D3;
+            outline: 0px;
+            border: 0px;
+            color: #fff;
+        }
+        
+        h1.title-map-saved {
+            font-size: 25px;
+            margin-left: -30px;
+            margin-top: 5px;
+            background: #6FC7D3;
+            padding: 13px;
+            color: #fff;
+        }
+        
+        h1.title-create-map {
+            font-size: 25px;
+            margin-top: 5px;
+            background: #6FC7D3;
+            padding: 13px;
+            color: #fff;
+            margin-left: 20px;
+            margin-bottom: -10px;
+        }
+        
+        .save-btn {
+            padding: 10px;
+            background: #6FC7D3;
+            outline: 0px;
+            border: 0px;
+            color: #fff;
+            margin-left: -5px;
+        }
+        
+        #place h2 {
+            color: #6FC7D3;
+            margin-top: -5px;
+            line-height: 25px;
+        }
+        
+        #place p {
+            font-size: 12px;
+            color: #8B8C81
+        }
+        
+        .container-result-search {
+            background-color: #fff;
+            padding-top: 10px;
+            padding-bottom: 10px;
+            margin-bottom: 10px;
+            padding-left: 3px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #ccc;
+            padding-right: 5px;
+            margin-right: 37px;
+        }
+        
+        .container-save-result {
+            background-color: #fff;
+            padding-top: 10px;
+            padding-bottom: 10px;
+            margin-bottom: 10px;
+            padding-left: 10px;
+            padding-bottom: 10px;
+            margin-left: -30px;
+        }
+        
+        button.button-add-map {
+            padding: 10px;
+            float: right;
+            position: relative;
+            bottom: 55px;
+            margin-right: 20px;
+            background: #6FC7D3;
+            outline: 0px;
+            border: 0px;
+            color: #fff;
+            right: -24px;
+        }
+        
+        .card {
+            border-radius: 4px;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), 0 0 0 1px rgba(63, 63, 68, 0.1);
+            background-color: #FFFFFF;
+            margin-bottom: 30px;
+            margin-left: 20px;
+            margin-top: 20px;
+        }
+        
+        .card .title {
+            margin: 0;
+            color: #333333;
+            font-weight: 300;
+            margin-bottom: -39px;
         }

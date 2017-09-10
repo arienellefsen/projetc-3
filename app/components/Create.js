@@ -11,7 +11,8 @@ class Create extends React.Component {
 		this.getPlaces = this.getPlaces.bind(this);
 
 		this.state = {
-			places: []
+			places: [],
+			title: []
 		}
 	}
 
@@ -35,6 +36,7 @@ class Create extends React.Component {
 	}
 
 	getPlaces(event) {
+	
 		const {
 			id,
 			onDataReceived
@@ -45,8 +47,8 @@ class Create extends React.Component {
 
 		//Create variables to pass as arguments
 		const place = this.place.value;
-
-
+		const title = this.title.value;
+		
 		var request = {
 			query: place
 		};
@@ -54,10 +56,9 @@ class Create extends React.Component {
 		const service = this.props.getService();
 		service.textSearch(request, (places) => {
 			this.setState({
-				places
+				places,
+				title: title
 			});
-
-
 
 // DELETE EVERYTHING AFER THIS
 			console.log(places);
@@ -89,30 +90,30 @@ class Create extends React.Component {
 			<div>
 				<form ref={(input) => this.searchForm = input} onSubmit={(e) => this.getPlaces(e)}>
 					<br />
-					<span>Title:<input ref={(input) => this.title = input} type="text" placeholder="Add a title for you pac" className="searchField" /></span>
-					<span>Place:<input ref={(input) => this.place = input} type="text" placeholder="Place" className="searchField" />
-					
-						<button type="submit" >
-							Search
-						</button>
-					</span>
+					<input ref={(input) => this.title = input} type="text" placeholder="Add a title for you pac" className="title-form" />
+						    <i class="fa fa-cloud-upload">
+   							 </i>
+							<input ref={(input) => this.place = input} type="text" placeholder="Place" className="searchField" />
+							<button type="submit" className="btn-search" >
+								Search
+							</button>
 				</form>
 				<div id="place" className="placeResult">
 					{this.state.places.map((place) => {
-						//
-						//
-						//
+						
 						console.log("place: " ,place);
 						return (
 							<div key={place.id}>
+								<div className="container-result-search">
 								<h2>{place.name}</h2>
 								<p>{place.formatted_address}</p>
 
 								<button
 									onClick={() => {this.addPlace(place)}}
-								>
+								 className="button-add-map">
 									Add
 								</button>
+							</div>
 							</div>
 						);
 					})}
@@ -126,3 +127,4 @@ class Create extends React.Component {
 	}
 }
 export default Create;
+

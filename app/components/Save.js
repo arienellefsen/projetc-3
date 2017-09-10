@@ -31,7 +31,7 @@ class Save extends React.Component {
   render() {
     return (
       <div>
-        <button onClick={this.savePac}> Save Pack </button>
+        <button onClick={this.savePac} className="save-btn"> Save Pack </button>
      </div>
     );
   }
