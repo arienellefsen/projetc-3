@@ -131,7 +131,7 @@ class Main extends React.Component {
           </div>
           <div className="col-md-6">
             <div>
-            <div className="card">
+            <div className="card add-padding">
                 <div id="map"></div>
             </div>
 
@@ -142,7 +142,6 @@ class Main extends React.Component {
                 console.log("place: " ,place);
                 return (
                   <div className="container-save-result">
-
                   <div key={place.id}>
                       <h2>{place.name}</h2>
                       <p>{place.formatted_address}</p>
@@ -153,6 +152,7 @@ class Main extends React.Component {
                   </button>
                 </div>
                 </div>
+
                   );
                 })}
 				    </div>
