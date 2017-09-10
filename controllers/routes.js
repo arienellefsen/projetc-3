@@ -1,6 +1,6 @@
 const passport = require('passport');
 var Place2 = require("./../models/Place2.js");
-
+var nodemailer = require('nodemailer');
 
 module.exports = function(app) {
 
@@ -105,6 +105,40 @@ module.exports = function(app) {
     app.get('/logout', function(req, res, next) {
         req.logout();
         res.redirect('login.html');
+    });
+
+    //Route to send Email
+    app.post('/send', function(req, res, next) {
+
+        var email = req.body.email;
+        console.log('email:' + email);
+
+        var transporter = nodemailer.createTransport({
+            service: 'gmail',
+            auth: {
+                user: 'ariene.ellefsen@gmail.com',
+                pass: 'Aladim2017@'
+            }
+        });
+
+        var mailOptions = {
+            from: 'ariene.ellefsen@gmail.com',
+            to: email,
+            subject: 'You got a Pack!',
+            text: 'That was easy!'
+        };
+
+        transporter.sendMail(mailOptions, function(error, info) {
+            if (error) {
+                console.log(error);
+            } else {
+                console.log('Email sent: ' + info.response);
+            }
+        });
+
+        res.redirect('/favorite-places');
+
+
     });
 
     function ensureAuthenticated(req, res, next) {

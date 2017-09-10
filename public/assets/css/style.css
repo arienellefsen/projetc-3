@@ -314,6 +314,7 @@
         .placeResult {
             padding-left: 23px;
             padding-top: 28px;
+            margin-right: 20px;
         }
         
         input.searchField {
@@ -358,7 +359,7 @@
         button.btn-search {
             padding: 10px;
             position: absolute;
-            top: 156px;
+            top: 145px;
             float: right;
             right: 74px;
             background: #6FC7D3;
@@ -420,12 +421,13 @@
         
         .container-save-result {
             background-color: #fff;
-            padding-top: 10px;
+            padding-top: 21px;
             padding-bottom: 10px;
             margin-bottom: 10px;
             padding-left: 10px;
             padding-bottom: 10px;
             margin-left: -30px;
+            padding-right: 20px;
         }
         
         button.button-add-map {
@@ -446,7 +448,7 @@
             box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), 0 0 0 1px rgba(63, 63, 68, 0.1);
             background-color: #FFFFFF;
             margin-bottom: 30px;
-            margin-left: 20px;
+            margin-left: 30px;
             margin-top: 20px;
         }
         
@@ -455,4 +457,48 @@
             color: #333333;
             font-weight: 300;
             margin-bottom: -39px;
+        }
+        
+        .add-padding {
+            margin-right: 20px;
+            margin-left: -2px;
+        }
+        
+        .center {
+            text-align: center;
+        }
+        
+        .card-favorites {
+            border-radius: 4px;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), 0 0 0 1px rgba(63, 63, 68, 0.1);
+            background-color: #FFFFFF;
+            margin-bottom: 30px;
+            margin-left: 30px;
+            margin-top: 10px;
+            padding: 20px;
+        }
+        
+        h4.favorite-title {
+            margin: 0;
+            color: #333333;
+            font-weight: 300;
+            margin-bottom: 0;
+            margin-left: 45px;
+            margin-top: 20px;
+        }
+        
+        .margin {
+            padding-right: 70px;
+        }
+        
+        h1.name-pack {
+            color: #6FC7D3;
+            margin-top: -5px;
+            line-height: 25px;
+            font-size: 18px;
+        }
+        
+        p.address-pack {
+            font-size: 12px;
+            color: #8B8C81;
         }

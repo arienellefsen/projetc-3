@@ -1,12 +1,13 @@
 import React from 'react';
 const helpers = require("./utils/helpers");
 
+
 class Save extends React.Component {
    
   constructor(props) {
     super(props);
     this.savePac = this.savePac.bind(this);
-     }
+  }
 
   componentDidUpdate() {
     console.log(this.props.places);
@@ -24,15 +25,15 @@ class Save extends React.Component {
       helpers.savePac(placeName, address, placeId);
 
     })
+  }
 
-    //console.log('Save places here:' + JSON.stringify(myJSON)); 
-  }  
 
   render() {
     return (
       <div>
-        <button onClick={this.savePac} className="save-btn"> Save Pack </button>
+        <button onClick={this.savePac} className="save-btn" data-toggle="modal" data-target="#myModal"> Save Pack </button>
      </div>
+    
     );
   }
 }

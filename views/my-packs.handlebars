@@ -1,7 +1,23 @@
-<h1> Your saved Packs</h1>
-{{#each this.pacData}}
-    {{#each this}}  
-        <h1>{{this.name}}</h1>
-        <p>{{this.address}}</p>
+<h4 class="favorite-title">Favorite Packs</h4>
+
+<div class="container margin">
+    <div class="row">
+    {{#each this.pacData}}
+        {{#each this}}  
+            <div class="col-sm-4">
+                <div class="card-favorites">
+                    <h1 class="name-pack">{{this.name}}</h1>
+                    <p class="address-pack">{{this.address}}</p>
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal2">Share</button>
+                    <button type="button" class="btn btn-primary">Edit</button>
+                    <button type="button" class="btn btn-primary">Delete</button>
+                </div>
+            </div>
+        {{/each}}
     {{/each}}
-{{/each}}
+    </div>
+</div>
+
+ 
+
+  
