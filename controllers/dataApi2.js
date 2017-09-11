@@ -11,7 +11,10 @@ apirouter2.post("/savePac", function(req, res) {
     Place2.create({
         name: req.body.name,
         address: req.body.address,
-        googlePlaceId: req.body.placeId
+        googlePlaceId: req.body.placeId,
+        lat: req.body.lat,
+        long: req.body.long
+
     }, function(err) {
         if (err) {
             console.log(err);
@@ -20,6 +23,5 @@ apirouter2.post("/savePac", function(req, res) {
         }
     });
 });
-
 
 module.exports = apirouter2;

@@ -19,11 +19,16 @@ class Save extends React.Component {
       let address = place.formatted_address;
       let placeName = place.name;
       let placeId = place.place_id;
+      let lat = place.geometry.location.lat();
+      let long =  place.geometry.location.lng();
+
       console.log('name:' + place.name);
       console.log ('address:' + place.formatted_address);
       console.log('googleid:' + place.place_id);
-      helpers.savePac(placeName, address, placeId);
+      console.log('lat:' + place.geometry.location.lat());
+      console.log('long:' + place.geometry.location.lng());
 
+      helpers.savePac(placeName, address, placeId, lat, long);
     })
   }
 

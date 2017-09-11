@@ -110,34 +110,62 @@ module.exports = function(app) {
     //Route to send Email
     app.post('/send', function(req, res, next) {
 
+        var query = Place2.findOne({ 'name': 'Nj Ymca State Alliance' });
         var email = req.body.email;
         console.log('email:' + email);
 
-        var transporter = nodemailer.createTransport({
-            service: 'gmail',
-            auth: {
-                user: 'ariene.ellefsen@gmail.com',
-                pass: 'Aladim2017@'
-            }
-        });
+        // selecting the `name` and `occupation` fields
+        query.select('lat long name address');
 
-        var mailOptions = {
-            from: 'ariene.ellefsen@gmail.com',
-            to: email,
-            subject: 'You got a Pack!',
-            text: 'That was easy!'
-        };
+        // execute the query at a later time
+        query.exec(function(err, map) {
 
-        transporter.sendMail(mailOptions, function(error, info) {
-            if (error) {
-                console.log(error);
-            } else {
-                console.log('Email sent: ' + info.response);
-            }
-        });
+            if (err) return handleError(err);
+
+            console.log('data: ' + map);
+            let mapData = {
+                    lat: map.lat,
+                    long: map.long,
+                    name: map.name,
+                    address: map.address
+                }
+                //Call function to send email
+            sendMail(email, mapData);
+        })
+
+        function sendMail(email, mapData) {
+            var transporter = nodemailer.createTransport({
+                service: 'gmail',
+                auth: {
+                    user: 'ariene.ellefsen@gmail.com',
+                    pass: 'Aladim2017@'
+                }
+            });
+
+            console.log('name map: ' + mapData.name);
+
+            var mailOptions = {
+                from: 'ariene.ellefsen@gmail.com',
+                to: email,
+                subject: 'You got a Pack!',
+                html: '<h1>Someone just want to share with you some cool pack!</h1><br><h3>' + mapData.name + '</h3><p>' + mapData.address + '</p><br><a href="http://maps.googleapis.com/maps/api/staticmap?size=800x8000&markers=color:red|' + mapData.lat + ',' + mapData.long + '&sensor=false">Click here to open the map </a>'
+            };
+
+            transporter.sendMail(mailOptions, function(error, info) {
+                if (error) {
+                    console.log(error);
+                } else {
+                    console.log('Email sent: ' + info.response);
+                }
+            });
+
+        }
+
+
+
+
 
         res.redirect('/favorite-places');
-
 
     });
 
