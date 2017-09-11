@@ -9,12 +9,14 @@ const googleApi = {
 // Helper functions for making API Calls
 var helper = {
     // This function posts new articles to our database.
-    savePac: function(placeName, address, placeId) {
+    savePac: function(placeName, address, placeId, lat, long) {
         console.log('Save pac here');
         var placesData = {
             name: placeName,
             address: address,
-            placeId: placeId
+            placeId: placeId,
+            lat: lat,
+            long: long
         }
         console.log('places data:' + placesData);
         return axios.post('api/savePac', placesData)

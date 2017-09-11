@@ -16,6 +16,14 @@ var PlaceSchema = new Schema({
     },
     googlePlaceId: {
         type: String
+    },
+    lat: {
+        type: String,
+        required: true
+    },
+    long: {
+        type: String,
+        required: true
     }
 });
 
