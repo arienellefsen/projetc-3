@@ -53,6 +53,31 @@ apirouter.post("/user/", function(req, res) {
         }); //end lookup storyId and save record if it is a new story
 });
 
+// update a User
+// user id required in req (validated: add new user)
+apirouter.put("/user/", function(req, res) {
+        console.log("update: " + req.body.user);
+        console.log("user email: " + req.body.user.emailAddress);
+        //assume req has item which is with JSON data similar to PAC
+        // Save these results in an object
+
+        var reqEmailAddress = req.body.user.emailAddress;
+
+            // Use the article id to find and update it's comments
+            User.findOneAndUpdate({
+                    _id: user.id
+                })
+                // Execute the above query
+                .exec(function(err, doc) {
+                    // Log any errors
+                    if (err) {
+                        res.send(err);
+                    } else {
+                        res.json(doc);
+                    }
+                });
+});
+
 // OK get a User with all info including pacs by user id with the most recent pac listed first
 // user id required in req
 //validated: user without any pac
