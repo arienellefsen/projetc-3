@@ -12,8 +12,6 @@ const express = require('express'),
     GoogleStrategy = require('passport-google-oauth2').Strategy,
     PORT = process.env.PORT || 3000;
 
-
-
 // API Access link for creating client ID and secret:
 // https://code.google.com/apis/console/
 const GOOGLE_CLIENT_ID = "250337484083-nt77d1ism43vtfpmg58oj5rr51g4gj3m.apps.googleusercontent.com",
