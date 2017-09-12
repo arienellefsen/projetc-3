@@ -11,6 +11,8 @@ class Save extends React.Component {
 
   componentDidUpdate() {
     console.log(this.props.places);
+    console.log(this.props.title);
+
   }
 
   savePac(){
@@ -31,7 +33,6 @@ class Save extends React.Component {
       helpers.savePac(placeName, address, placeId, lat, long);
     })
   }
-
 
   render() {
     return (

@@ -2,7 +2,6 @@ import React from 'react';
 var helpers = require("./utils/helpers");
 import Map from './Map';
 
-
 class Create extends React.Component {
 	constructor(props) {
 		super(props);
@@ -12,7 +11,7 @@ class Create extends React.Component {
 
 		this.state = {
 			places: [],
-			title: []
+			title: ''
 		}
 	}
 
@@ -24,14 +23,14 @@ class Create extends React.Component {
 		}
 	}
 
-	addPlace(place){
+	addPlace(place, title){
 		// we need to call the parent function to set parent state@
 		const {
 			addPlaceToPac
 		} = this.props;
 
 		if (typeof addPlaceToPac === 'function') {
-			addPlaceToPac(place);
+			addPlaceToPac(place, title);
 		}
 	}
 
@@ -53,11 +52,14 @@ class Create extends React.Component {
 			query: place
 		};
 
+		this.setState({
+				title: title
+			});
+
 		const service = this.props.getService();
 		service.textSearch(request, (places) => {
 			this.setState({
 				places,
-				title: title
 			});
 
 // DELETE EVERYTHING AFER THIS
@@ -109,7 +111,7 @@ class Create extends React.Component {
 								<p>{place.formatted_address}</p>
 
 								<button
-									onClick={() => {this.addPlace(place)}}
+									onClick={() => {this.addPlace(place,title )}}
 								 className="button-add-map">
 									Add
 								</button>
@@ -118,9 +120,6 @@ class Create extends React.Component {
 						);
 					})}
 				</div>
-
-
-				{/* We will render our map into this empty div! */}
 			</div>
 
 		)

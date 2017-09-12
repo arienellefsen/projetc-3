@@ -2,6 +2,10 @@ const passport = require('passport');
 var Place2 = require("./../models/Place2.js");
 var nodemailer = require('nodemailer');
 var User = require("./../models/User.js");
+var session = require('express-session');
+var express = ('express');
+var cookieParser = require('cookie-parser');
+
 
 module.exports = function(app) {
 
@@ -11,44 +15,59 @@ module.exports = function(app) {
         console.log('Log Status: ' + logStatus.logStatus);
     });
 
+
     app.get('/dashboard', ensureAuthenticated, function(req, res, next) {
+
         if (req.isAuthenticated()) {
+
+            var pacUser2 = getPacUserInfoFromGmailAcct(req.user._json);
             isLog = true;
             logStatus = {
                 logStatus: isLog
             };
+
             //check existing user or not
             //Register new user
             console.log("to check pacappuserid: " + req.user.pacappuserid);
-            if(!req.user.pacappuserid){
+            if (!req.user.pacappuserid) {
                 req.user.pacappuserid = getPacUserId(req);
             }
             res.render('dashboard', logStatus);
         }
+        //Get userId using cookie
+        //let cookieId = req.cookies['cookieId'];
+        //console.log('here is the id inside of cookie: ' + cookieId);
+
+        //call a function and pass res
+
+        function testRes(arg) {
+            console.log('this res' + res);
+        }
     });
 
-    function getPacUserInfoFromGmailAcct(userGmailAcctInfo){
+    function getPacUserInfoFromGmailAcct(userGmailAcctInfo) {
+
         var emailAddress = "";
 
         var emailcnt = userGmailAcctInfo.emails.length;
-        if(emailcnt > 0)
+        if (emailcnt > 0)
             emailAddress = userGmailAcctInfo.emails[0].value;
 
         var pacUser = {
-                firstName: userGmailAcctInfo.name.givenName ? userGmailAcctInfo.name.givenName : "FristName",
-                lastName: userGmailAcctInfo.name.familyName ? userGmailAcctInfo.name.familyName : "LastName",
-                emailAddress: emailAddress
+            firstName: userGmailAcctInfo.name.givenName ? userGmailAcctInfo.name.givenName : "FristName",
+            lastName: userGmailAcctInfo.name.familyName ? userGmailAcctInfo.name.familyName : "LastName",
+            emailAddress: emailAddress
         };
 
         return pacUser;
     }
 
-    function getPacUserId(req){
+    function getPacUserId(req) {
         var pacUser = getPacUserInfoFromGmailAcct(req.user._json);
         console.log(pacUser);
         var pacUserId = null;
-            User.findOne({
-                 emailAddress: pacUser.emailAddress
+        User.findOne({
+                emailAddress: pacUser.emailAddress
             }) // ..and populate all of the pacs for the user
             .populate({
                 path: "pacs",
@@ -58,38 +77,43 @@ module.exports = function(app) {
                     }]
                 }
             }).exec(function(error, existinguser) {
-                    if (error) {
-                        console.log(error);
-                    } else {
-                        if (! existinguser) {//cannot use existinguser.length===0 for findOne function
-                            //save the User
-                            // Using our User model, create a new entry
-                            // This effectively passes the result object to the entry
-                            var entry = new User(pacUser);
+                if (error) {
+                    console.log(error);
+                } else {
+                    if (!existinguser) { //cannot use existinguser.length===0 for findOne function
+                        //save the User
+                        // Using our User model, create a new entry
+                        // This effectively passes the result object to the entry
+                        var entry = new User(pacUser);
+                        // Now, save that entry to the db
+                        entry.save(function(err, newuser) {
+                            if (err) {
+                                console.log(err);
+                            } else {
+                                console.log(JSON.stringify(newuser));
+                                req.user.pacappuserid = existinguser._id;
+                                //   console.log("after1 set pacappuserid: " + req.user.pacappuserid);
+                                //pacUserId = newuser._id;
 
-                            // Now, save that entry to the db
-                            entry.save(function(err, newuser) {
-                                if (err) {
-                                    console.log(err);
-                                } else {
-                                     console.log(JSON.stringify(newuser));
-                                     req.user.pacappuserid = existinguser._id;
-                                    console.log("after set pacappuserid: " + req.user.pacappuserid);
-                                     //pacUserId = newuser._id;
-                                }
-                            });
-                        }
-                        else {
-                            console.log(JSON.stringify(existinguser));
-                            req.user.pacappuserid = existinguser._id;
-                            console.log("after set pacappuserid: " + req.user.pacappuserid);
-                            //pacUserId = existinguser._id;
-                            //res.json(existinguser);
+                            }
+                        });
+                    } else {
+                        console.log(JSON.stringify(existinguser));
+                        req.user.pacappuserid = existinguser._id;
+                        console.log("after2 set pacappuserid: " + req.user.pacappuserid);
+
+                        ///
+                        //pacUserId = existinguser._id;
+                        //res.json(existinguser);
                         //     console.log("find existing record with: " + articleStoryId);
-                        }
+                    }
                 }
             }); //end lookup storyId and save record if it is a new story
     }
+
+
+
+
 
     app.get('/favorite-places', ensureAuthenticated, function(req, res, next) {
         //res.render('favorite');
@@ -119,48 +143,51 @@ module.exports = function(app) {
 
     //Route account page
     app.get('/account', ensureAuthenticated, function(req, res, next) {
-/* Not working!    not able to set req.user.pacappuserid
-        if(!req.user.pacappuserid){
-            req.user.pacappuserid = getPacUserId(req);
-        }*/
+        /* Not working!    not able to set req.user.pacappuserid
+                if(!req.user.pacappuserid){
+                    req.user.pacappuserid = getPacUserId(req);
+                }*/
         var pacUser = getPacUserInfoFromGmailAcct(req.user._json);
         User.findOne({
-            //"_id": req.user.pacappuserid
-            emailAddress: pacUser.emailAddress
-        })
-        .populate({
-            path: "pacs",
-            // Get places of pacs - populate the 'places' array for every pac
-            // populate: { path: 'places' },
-            options: {
-                sort: [{
-                    "createdAt": -1
-                }]
-            }
-        })
-        // now, execute our query
-        .exec(function(error, userwpacs) {
-            // Log any errors
-            if (error) {
-                console.log(error);
-            }
-            // Otherwise, send the doc to the browser as a json object
-            else {
-                console.log(JSON.stringify(userwpacs));
-                let userData = {
-                    userId: userwpacs._id,
-                    name: userwpacs.firstName+userwpacs.lastName,
-                    firstname: userwpacs.firstName,
-                    lastname: userwpacs.lastName,
-                    email: userwpacs.emailAddress,
-                    image: req.user._json.image
-                };
-                res.render('account', { userData });
-            }
-        });
+                //"_id": req.user.pacappuserid
+                emailAddress: pacUser.emailAddress
+            })
+            .populate({
+                path: "pacs",
+                // Get places of pacs - populate the 'places' array for every pac
+                // populate: { path: 'places' },
+                options: {
+                    sort: [{
+                        "createdAt": -1
+                    }]
+                }
+            })
+            // now, execute our query
+            .exec(function(error, userwpacs) {
+                // Log any errors
+                if (error) {
+                    console.log(error);
+                }
+                // Otherwise, send the doc to the browser as a json object
+                else {
+                    console.log(JSON.stringify(userwpacs));
+                    let userData = {
+                        userId: userwpacs._id,
+                        name: userwpacs.firstName + userwpacs.lastName,
+                        firstname: userwpacs.firstName,
+                        lastname: userwpacs.lastName,
+                        email: userwpacs.emailAddress,
+                        image: req.user._json.image
+                    };
+
+
+                    res.render('account', { userData });
+                }
+            });
     });
 
     app.get('/login', ensureAuthenticated, function(req, res, next) {
+
         res.render('login', { user: req.user });
     });
 
@@ -209,10 +236,10 @@ module.exports = function(app) {
 
             console.log('data: ' + map);
             let mapData = {
-                    lat: map.lat,
-                    long: map.long,
-                    name: map.name,
-                    address: map.address
+                    lat: 'test1',
+                    long: 'test2',
+                    name: 'name',
+                    address: 'address'
                 }
                 //Call function to send email
             sendMail(email, mapData);
@@ -245,13 +272,7 @@ module.exports = function(app) {
             });
 
         }
-
-
-
-
-
         res.redirect('/favorite-places');
-
     });
 
     function ensureAuthenticated(req, res, next) {
