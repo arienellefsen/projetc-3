@@ -3,18 +3,11 @@
                 <div class="row">
                     <div class="col-md-8">
                         <div class="card">
-                            <div class="header">
-                                <h4 class="title">Edit Profile</h4>
-                            </div>
+                            
                             <div class="content">
                                 <form>
                                     <div class="row">
-                                        <div class="col-md-5">
-                                            <div class="form-group">
-                                                <label>Company (disabled)</label>
-                                                <input type="text" class="form-control" disabled placeholder="Company" value="Creative Code Inc.">
-                                            </div>
-                                        </div>
+                                       
                                         <div class="col-md-3">
                                             <div class="form-group">
                                                 <label>Username</label>
@@ -97,15 +90,10 @@
                             <div class="content">
                                 <div class="author">
                                      <a href="#">
-                                         {{#each this.userData}}
-                                             {{#each this}}  
-                                               {{#if image}}
+                                        
+                                            <img class="avatar border-gray" src="{{userData.image.url}}"/>
+                                            <h1>{{userData.name}}</h1>
                                             
-                                            <img class="avatar border-gray" src="{{image.url}}"/>
-                                              {{/if}}
-                                            <h1>{{displayName}}</h1>
-                                            {{/each}}
-                                        {{/each}}
                                       </h4>
                                     </a>
                                 </div>
