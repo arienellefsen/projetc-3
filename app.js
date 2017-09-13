@@ -125,9 +125,9 @@ if (err) {
 }
 });
 
-// Database configuration with mongoose
-mongoose.connect("mongodb://heroku_4c80hglr:ctpgelbtcm86l2vuut6040o7q2@ds135364.mlab.com:35364/heroku_4c80hglr");
-var db = mongoose.connection;
+// // Database configuration with mongoose
+// mongoose.connect("mongodb://heroku_4c80hglr:ctpgelbtcm86l2vuut6040o7q2@ds135364.mlab.com:35364/heroku_4c80hglr");
+// var db = mongoose.connection;
 
 // Show any mongoose errors
 db.on("error", function(error) {
