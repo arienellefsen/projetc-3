@@ -73,7 +73,7 @@ module.exports = function(app) {
                                 console.log(err);
                             } else {
                                 console.log(JSON.stringify(newuser));
-                                req.user.pacappuserid = existinguser._id;
+                                req.user.pacappuserid = newuser._id;
                                 console.log("after set pacappuserid: " + req.user.pacappuserid);
                                 //pacUserId = newuser._id;
                             }
@@ -131,7 +131,7 @@ module.exports = function(app) {
                     } else {
                         console.log(JSON.stringify(existinguser));
                         let pacData = {
-                            pac: existinguser.pacs[0].places
+                            pac: existinguser.pacs
                         }
                         res.render('my-packs', { pacData });
                     }
