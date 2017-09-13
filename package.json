@@ -2,7 +2,7 @@
   "name": "Pac",
   "version": "0.1.6",
   "description": "Add your favorite places in one single app to share with your friends using gmail account ",
-  "main": "./lib/oauth2.js",
+  "main": "app.js",
   "dependencies": {
     "axios": "^0.12.0",
     "body-parser": "^1.15.2",
