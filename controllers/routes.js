@@ -92,7 +92,7 @@ module.exports = function(app) {
 
     app.get('/favorite-places', ensureAuthenticated, function(req, res, next) {
         //res.render('favorite');
-        Place2.find({}).exec(function(err, doc) {
+/*        Place2.find({}).exec(function(err, doc) {
 
             let pacData = {
                 pac: doc
@@ -106,7 +106,37 @@ module.exports = function(app) {
                     pacData
                 });
             }
-        });
+        });*/
+            var pacUser = getPacUserInfoFromGmailAcct(req.user._json);
+            User.findOne({
+                emailAddress: pacUser.emailAddress
+            }) // ..and populate all of the pacs for the user
+            .populate({
+                path: "pacs",
+                options: {
+                    sort: [{
+                        "createdAt": -1
+                    }]
+                }
+            }).exec(function(error, existinguser) {
+                if (error) {
+                    console.log(error);
+                } else {
+                    if (!existinguser) { //cannot use existinguser.length===0 for findOne function
+                        var doc = [];
+                        let pacData = {
+                        pac: doc
+                        }
+                        res.render('my-packs', { pacData});
+                    } else {
+                        console.log(JSON.stringify(existinguser));
+                        let pacData = {
+                            pac: existinguser.pacs[0].places
+                        }
+                        res.render('my-packs', { pacData });
+                    }
+                }
+            }); //end lookup storyId and save record if it is a new story
     });
 
     app.get('/my-pacs', ensureAuthenticated, function(req, res, next) {
