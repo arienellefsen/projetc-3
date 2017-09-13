@@ -2,128 +2,147 @@ import React from 'react';
 var helpers = require("./utils/helpers");
 import Map from './Map';
 
+
 class Create extends React.Component {
-	constructor(props) {
-		super(props);
-		this.myClass = 'hidden';
-		this.handleClick = this.handleClick.bind(this);
-		this.getPlaces = this.getPlaces.bind(this);
+    constructor(props) {
+        super(props);
+        this.myClass = 'hidden';
+        this.handleClick = this.handleClick.bind(this);
+        this.getPlaces = this.getPlaces.bind(this);
 
-		this.state = {
-			places: [],
-			title: ''
-		}
-	}
+        this.state = {
+            places: []
+        }
+    }
 
-	//Create a pac function to display the name and the search field
-	handleClick = (e) => {
-		if (this.myClass === 'hidden') {
-			this.searchForm.classList.remove('hidden');
-			this.searchForm.classList.add('pac-form');
-		}
-	}
+    //Create a pac function to display the name and the search field
+    handleClick = (e) => {
+        if (this.myClass === 'hidden') {
+            this.searchForm.classList.remove('hidden');
+            this.searchForm.classList.add('pac-form');
+        }
+    }
 
-	addPlace(place, title){
-		// we need to call the parent function to set parent state@
-		const {
-			addPlaceToPac
-		} = this.props;
+    addPlace(place) {
+        // we need to call the parent function to set parent state@
+        const {
+            addPlaceToPac
+        } = this.props;
 
-		if (typeof addPlaceToPac === 'function') {
-			addPlaceToPac(place, title);
-		}
-	}
+        if (typeof addPlaceToPac === 'function') {
+            addPlaceToPac(place);
+        }
+       
+    }
 
-	getPlaces(event) {
-	
-		const {
-			id,
-			onDataReceived
-				} = this.props;
+    getPlaces(event) {
 
-		// The above code means the same as this:
-		event.preventDefault();
+        const {
+            id,
+            onDataReceived
+        } = this.props;
 
-		//Create variables to pass as arguments
-		const place = this.place.value;
-		const title = this.title.value;
-		
-		var request = {
-			query: place
-		};
+        // The above code means the same as this:
+        event.preventDefault();
 
-		this.setState({
-				title: title
-			});
+        //Create variables to pass as arguments
+        const place = this.place.value;
+        const title = this.title.value;
 
-		const service = this.props.getService();
-		service.textSearch(request, (places) => {
-			this.setState({
-				places,
-			});
+        var request = {
+            query: place
+        };
 
-// DELETE EVERYTHING AFER THIS
-			console.log(places);
-			console.log(places[0].name);
-			console.log(places[0].formatted_address);
-			console.log(places[0].place_id);
-			console.log(places[0].reference);
+        const service = this.props.getService();
+        service.textSearch(request, (places) => {
+            this.setState({
+                places
+            });
 
-			var lat = places[0].geometry.location.lat();
-			var long = places[0].geometry.location.lng();
+            // DELETE EVERYTHING AFER THIS
+            console.log(places);
+            console.log(places[0].name);
+            console.log(places[0].formatted_address);
+            console.log(places[0].place_id);
+            console.log(places[0].reference);
 
-			console.log('lat: ' + lat);
-			console.log('long: ' + long);
+            var lat = places[0].geometry.location.lat();
+            var long = places[0].geometry.location.lng();
+
+            console.log('lat: ' + lat);
+            console.log('long: ' + long);
 
 
-			var place = document.getElementById('place');
-			// place.innerHTML += "<h2>" + places[0].name + "</h2>" + "<p>" + places[0].formatted_address + "</p><hr>";
+            var place = document.getElementById('place');
+            // place.innerHTML += "<h2>" + places[0].name + "</h2>" + "<p>" + places[0].formatted_address + "</p><hr>";
 
-// I GUESS UP TO HERE
+            // I GUESS UP TO HERE
 
-			if (typeof onDataReceived === 'function') {
-				onDataReceived(places);
-			}
-		});
-	}
+            if (typeof onDataReceived === 'function') {
+                onDataReceived(places);
+            }
+        });
+    }
 
-	render() {
-		return (
-			<div>
-				<form ref={(input) => this.searchForm = input} onSubmit={(e) => this.getPlaces(e)}>
-					<br />
-					<input ref={(input) => this.title = input} type="text" placeholder="Add a title for you pac" className="title-form" />
-						    <i class="fa fa-cloud-upload">
-   							 </i>
-							<input ref={(input) => this.place = input} type="text" placeholder="Place" className="searchField" />
-							<button type="submit" className="btn-search" >
-								Search
-							</button>
-				</form>
-				<div id="place" className="placeResult">
-					{this.state.places.map((place) => {
-						
-						console.log("place: " ,place);
-						return (
-							<div key={place.id}>
-								<div className="container-result-search">
-								<h2>{place.name}</h2>
-								<p>{place.formatted_address}</p>
+    render() {
+        return ( 
+            <div>
+            <form ref = {
+                (input) => this.searchForm = input
+            }
+            onSubmit = {
+                (e) => this.getPlaces(e)
+            } >
+            <br/>
+            <input ref = {
+                (input) => this.title = input
+            }
+            type = "text"
+            onChange = {
+                (e) => {
+                    this.props.onTitleChanged(e);
+                }
+            }
+            placeholder = "Add a title for you pac"
+            className = "title-form" />
+            <i class = "fa fa-cloud-upload" ></i> 
+            <input ref = {
+                (input) => this.place = input
+            }
+            type = "text"
+            placeholder = "Place"
+            className = "searchField" />
+            <button type = "submit"
+            className = "btn-search" >
+            Search </button> 
+            </form > 
+            <div id = "place"
+            className = "placeResult" > {
+                this.state.places.map((place) => {
+                    console.log("place: ", place);
+                    return (<div key = { place.id } >
+                        <div className = "container-result-search" >
+                            <h2> { place.name } </h2>
+                            <p> { place.formatted_address } </p>
 
-								<button
-									onClick={() => {this.addPlace(place,title )}}
-								 className="button-add-map">
-									Add
-								</button>
-							</div>
-							</div>
-						);
-					})}
-				</div>
-			</div>
+                            <button onClick = {
+                                () => { this.addPlace(place) }
+                            }
+                            className = "button-add-map" >
+                            Add 
+                            </button> 
+                            </div > 
+                        </div>
+                    );
+                })
+            } 
+            </div>
 
-		)
-	}
+
+            { /* We will render our map into this empty div! */ } 
+            </div>
+
+        )
+    }
 }
 export default Create;
-

@@ -16,15 +16,15 @@ class Main extends React.Component {
         this.getMap = this.getMap.bind(this);
         this.getService = this.getService.bind(this);
         this.removePlace = this.removePlace.bind(this);
+        this.onTitleChanged = this.onTitleChanged.bind(this);
 
-        //Get Initial State
+        this.addMapMarker = this.addMapMarker.bind(this);
+
         this.state = {
             title: '',
             places: [],
             markers: {}
-        }
-        this.addMapMarker = this.addMapMarker.bind(this);
-
+        };
     }
 
     map = null;
@@ -37,16 +37,12 @@ class Main extends React.Component {
     componentDidMount() {
         console.log('mount!');
 
-        this.setState({
-            title: 'ariene'
-        });
         this.map = new google.maps.Map(document.getElementById('map'), {
             zoom: 3,
             center: US_CENTER_POSITION
         });
 
         this.service = new google.maps.places.PlacesService(this.map);
-
     }
 
     componentDidUpdate(prevProps) {
@@ -66,15 +62,13 @@ class Main extends React.Component {
             map: this.map
         });
 
+        // save marker in memory
         this.setState({
             markers: {
                 ...this.state.markers,
                 [place.id]: marker
-
-
             }
         });
-
 
         // add a marker to this.map
         //reposition the map to show the marked place
@@ -95,94 +89,95 @@ class Main extends React.Component {
 
     }
 
-    removePlace(e, index) {
+    removePlace(place, index) {
         console.log('remove place');
         var newplaces = this.state.places;
 
         newplaces.splice(index, 1);
 
+        // remove marker from the map
+        this.state.markers[place.id].setMap(null);
+
+        var newMarkers = this.state.markers;
+        delete newMarkers[place.id];
+
         this.setState({
-            places: newplaces
+            places: newplaces,
+            markers: newMarkers
         });
+    }
+
+    onTitleChanged (event) {
+        const title = event.target.value;
+       // console.log(event, title);
+        this.setState({ title });
     }
 
 
     render() {
         // TODO: add input here bound to this.state.title
         return ( <
-                div >
-                <
-                div className = "row" >
-                <
-                div className = "col-md-6" >
-                <
-                div className = "card" >
-                <
-                div className = "header" >
-                <
-                h4 className = "title" > Create a Pac < /h4> < /
-                div > <
-                Create getService = { this.getService }
-                getMap = { this.getMap }
-                addPlaceToPac = {
-                    (place, title) => {
-                        console.log('Adding place to parent Pac state: ', place);
-                        console.log('Adding place to parent Pac title: ', title)
-
+            div >
+            <div className = "row" >
+            <div className = "col-md-6" >
+            <div className = "card" >
+            <div className = "header" >
+            <h4 className = "title" > Create a Pac </h4>
+            </div>
+            <Create getService = { this.getService }
+            getMap = { this.getMap }
+            addPlaceToPac = {
+                (place) => {
+                    console.log('Adding place to parent Pac state: ', place);
+                    if (this.state.places.some((item) => place.id === item.id)) {
+                        return console.log('You already added that place!');
+                    } else {
                         this.addMapMarker(place);
                         this.setState({
                             places: this.state.places.concat(place)
                         });
                     }
                 }
-                /> < /
-                div > <
-                /div> <
-                div className = "col-md-6" >
-                <
-                div >
-                <
-                div className = "card add-padding" >
-                <
-                div id = "map" > < /div> < /
-                div >
+            }
+            onTitleChanged={this.onTitleChanged}
+            /> 
+            </div>
+            </div> 
+            <div className = "col-md-6" >
+            <div >
+            <div className = "card add-padding" >
+            <div id = "map" > </div> 
+            </div>
 
-                <
-                div id = "place"
-                className = "placeResult" >
-                <
-                h1 className = "title-map-saved" > Places Added < /h1> {
+            <div id = "place"
+            className = "placeResult" >
+            <h1 className = "title-map-saved" > Places Added </h1> {
                 this.state.places.map((place, index) => {
 
                     console.log("place: ", place);
-                    return ( <
-                        div className = "container-save-result" >
-                        <
-                        div key = { place.id } >
-                        <
-                        h2 > { place.name } < /h2> <
-                        p > { place.formatted_address } < /p> <
-                        button className = "button-add-map"
-                        onClick = {
-                            () => { this.removePlace(place, index) }
-                        } >
-                        Remove <
-                        /button> < /
-                        div > <
-                        /div>
+                    return ( 
+                        <div className = "container-save-result" >
+                            <div key = { place.id } >
+                            <h2> { place.name } </h2> 
+                            <p> { place.formatted_address } </p>
+                            <button className = "button-add-map"
+                            onClick = {() => {
+                                this.removePlace(place, index);
+                            }}>
+                            Remove </button> 
+                            </div> 
+                        </div>
                     );
                 })
-            } <
-            /div> <
-        Save places = { this.props.places }
-        title = { this.props.title }
-        /> < /
-        div > <
-            /div> < /
-            div > <
-            /div>
-    )
-}
+            } 
+            </div> 
+                <Save places = { this.state.places } title={this.state.title}/> 
+            </div> 
+            </div> 
+            </div> 
+            </div>
+        )
+    }
 }
 
 
