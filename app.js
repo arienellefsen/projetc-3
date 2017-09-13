@@ -114,29 +114,19 @@ app.use('/api', apirouter);
 // localhost if we don't find one.
 //var dburistring = process.env.MONGODB_URI || process.env.MONGOHQ_URL || 'mongodb://localhost/pacs';
 
-var dburistring = "mongodb://ariene-test:test123@ds135364.mlab.com:35364/ariene-test";
-// Makes connection asynchronously.  Mongoose will queue up database
-// operations and release them when the connection is complete.
-mongoose.connect(dburistring, function(err, res) {
-if (err) {
-    console.log('ERROR connecting to: ' + dburistring + '. ' + err);
-} else {
-    console.log('Succeeded connected to: ' + dburistring);
-}
-});
-
-// // Database configuration with mongoose
+// // MongoDB Configuration
 // mongoose.connect("mongodb://heroku_4c80hglr:ctpgelbtcm86l2vuut6040o7q2@ds135364.mlab.com:35364/heroku_4c80hglr");
-// var db = mongoose.connection;
+// const db = mongoose.connection;
 
-// Show any mongoose errors
-db.on("error", function(error) {
-    console.log("Mongoose Error: ", error);
+var promise = mongoose.connect('mongodb://kalpana:kalpana@ds135364.mlab.com:35364/heroku_4c80hglr', {
+  useMongoClient: true,
+  /* other options */
 });
 
-// Once logged in to the db through mongoose, log a success message
-db.once("open", function() {
-    console.log("Mongoose connection successful.");
+promise.then(function(db) {
+
+
+   console.log("Mongoose connection successful.");
 });
 
 //Create server
