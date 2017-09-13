@@ -32,7 +32,7 @@ export default {
               }
             }).then(function (response) {
                 console.log(JSON.stringify(response));
-                return axios.get('http://localhost:3000/api/users/'
+                return axios.get('/api/users/'
                 + response._id
                 +'/pacs').then(function (response) {
                             console.log(JSON.stringify(response));
@@ -81,7 +81,7 @@ export default {
       }
     }).then(function (response) {
           console.log(JSON.stringify(response));
-          return axios.get('http://localhost:3000/api/users/' + response.createdBy
+          return axios.get('/api/users/' + response.createdBy
             +'/pacs').then(function (response) {
             console.log(JSON.stringify(response));
             return response.data
