@@ -25,26 +25,12 @@ module.exports = function(app) {
 
     app.get('/favorite-places', ensureAuthenticated, function(req, res, next) {
         //res.render('favorite');
-/*        Place2.find({}).exec(function(err, doc) {
-
-            let pacData = {
-                pac: doc
-            }
-
-            if (err) {
-                console.log(err);
-            } else {
-                console.log(doc);
-                res.render('my-packs', {
-                    pacData
-                });
-            }
-        });*/
             User.findOne({
                 _id: req.user.pacappuserid
             }) // ..and populate all of the pacs for the user
             .populate({
                 path: "pacs",
+                populate: { path: 'places' },
                 options: {
                     sort: [{
                         "createdAt": -1

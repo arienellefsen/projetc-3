@@ -6,10 +6,10 @@
         {{#each this}}  
             <div class="col-sm-4">
                 <div class="card-favorites">
-                    <h1 class="name-pack">{{this.name}}</h1>
+                    <h1 class="name-pack">{{this.title}}</h1>
+                    {{#each this.places}}  
                     <p class="address-pack">{{this.address}}</p>
-                    <p class="address-pack">{{this.lat}}</p>
-                    <p class="address-pack">{{this.long}}</p>
+                     {{/each}} 
                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal2" id="share">Share</button>
                     <button type="button" class="btn btn-primary">Edit</button>
                     <button type="button" class="btn btn-primary">Delete</button>
