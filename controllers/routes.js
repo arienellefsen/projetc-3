@@ -73,7 +73,7 @@ module.exports = function(app) {
                                 console.log(err);
                             } else {
                                 console.log(JSON.stringify(newuser));
-                                req.user.pacappuserid = existinguser._id;
+
                                 console.log("after set pacappuserid: " + req.user.pacappuserid);
                                 //pacUserId = newuser._id;
                             }
@@ -92,23 +92,23 @@ module.exports = function(app) {
 
     app.get('/favorite-places', ensureAuthenticated, function(req, res, next) {
         //res.render('favorite');
-/*        Place2.find({}).exec(function(err, doc) {
+        /*        Place2.find({}).exec(function(err, doc) {
 
-            let pacData = {
-                pac: doc
-            }
+                    let pacData = {
+                        pac: doc
+                    }
 
-            if (err) {
-                console.log(err);
-            } else {
-                console.log(doc);
-                res.render('my-packs', {
-                    pacData
-                });
-            }
-        });*/
-            var pacUser = getPacUserInfoFromGmailAcct(req.user._json);
-            User.findOne({
+                    if (err) {
+                        console.log(err);
+                    } else {
+                        console.log(doc);
+                        res.render('my-packs', {
+                            pacData
+                        });
+                    }
+                });*/
+        var pacUser = getPacUserInfoFromGmailAcct(req.user._json);
+        User.findOne({
                 emailAddress: pacUser.emailAddress
             }) // ..and populate all of the pacs for the user
             .populate({
@@ -125,9 +125,9 @@ module.exports = function(app) {
                     if (!existinguser) { //cannot use existinguser.length===0 for findOne function
                         var doc = [];
                         let pacData = {
-                        pac: doc
+                            pac: doc
                         }
-                        res.render('my-packs', { pacData});
+                        res.render('my-packs', { pacData });
                     } else {
                         console.log(JSON.stringify(existinguser));
                         let pacData = {
