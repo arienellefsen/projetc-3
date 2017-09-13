@@ -215,12 +215,12 @@ module.exports = function(app) {
 
             console.log('data: ' + map);
             let mapData = {
-                lat: map.lat,
-                long: map.long,
-                name: map.name,
-                address: map.address
-            }
-            //Call function to send email
+                    lat: map.lat,
+                    long: map.long,
+                    name: map.name,
+                    address: map.address
+                }
+                //Call function to send email
             sendMail(email, mapData);
         })
 
@@ -228,15 +228,15 @@ module.exports = function(app) {
             var transporter = nodemailer.createTransport({
                 service: 'gmail',
                 auth: {
-                    user: 'pacnshare@gmail.com',
-                    pass: 'xf&u6iFXB!3I'
+                    user: 'ariene.ellefsen@gmail.com',
+                    pass: 'Aladim2017@'
                 }
             });
 
             console.log('name map: ' + mapData.name);
 
             var mailOptions = {
-                from: 'pacnshare@gmail.com',
+                from: 'ariene.ellefsen@gmail.com',
                 to: email,
                 subject: 'You got a Pack!',
                 html: '<h1>Someone just want to share with you some cool pack!</h1><br><h3>' + mapData.name + '</h3><p>' + mapData.address + '</p><br><a href="http://maps.googleapis.com/maps/api/staticmap?size=800x8000&markers=color:red|' + mapData.lat + ',' + mapData.long + '&sensor=false">Click here to open the map </a>'
