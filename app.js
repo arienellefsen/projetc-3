@@ -110,6 +110,8 @@ require('./controllers/routes.js')(app, passport);
 var apirouter2 = require('./controllers/dataApi2');
 //Changed to use ApiRouter2
 app.use('/api', apirouter2);
+app.use('/api', apirouter);
+
 
 
 
