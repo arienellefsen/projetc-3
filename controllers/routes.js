@@ -2,10 +2,6 @@ const passport = require('passport');
 var Place2 = require("./../models/Place2.js");
 var nodemailer = require('nodemailer');
 var User = require("./../models/User.js");
-var session = require('express-session');
-var express = ('express');
-var cookieParser = require('cookie-parser');
-
 
 module.exports = function(app) {
 
@@ -15,17 +11,12 @@ module.exports = function(app) {
         console.log('Log Status: ' + logStatus.logStatus);
     });
 
-
     app.get('/dashboard', ensureAuthenticated, function(req, res, next) {
-
         if (req.isAuthenticated()) {
-
-            var pacUser2 = getPacUserInfoFromGmailAcct(req.user._json);
             isLog = true;
             logStatus = {
                 logStatus: isLog
             };
-
             //check existing user or not
             //Register new user
             console.log("to check pacappuserid: " + req.user.pacappuserid);
@@ -34,19 +25,9 @@ module.exports = function(app) {
             }
             res.render('dashboard', logStatus);
         }
-        //Get userId using cookie
-        //let cookieId = req.cookies['cookieId'];
-        //console.log('here is the id inside of cookie: ' + cookieId);
-
-        //call a function and pass res
-
-        function testRes(arg) {
-            console.log('this res' + res);
-        }
     });
 
     function getPacUserInfoFromGmailAcct(userGmailAcctInfo) {
-
         var emailAddress = "";
 
         var emailcnt = userGmailAcctInfo.emails.length;
@@ -85,6 +66,7 @@ module.exports = function(app) {
                         // Using our User model, create a new entry
                         // This effectively passes the result object to the entry
                         var entry = new User(pacUser);
+
                         // Now, save that entry to the db
                         entry.save(function(err, newuser) {
                             if (err) {
@@ -92,17 +74,14 @@ module.exports = function(app) {
                             } else {
                                 console.log(JSON.stringify(newuser));
                                 req.user.pacappuserid = existinguser._id;
-                                //   console.log("after1 set pacappuserid: " + req.user.pacappuserid);
+                                console.log("after set pacappuserid: " + req.user.pacappuserid);
                                 //pacUserId = newuser._id;
-
                             }
                         });
                     } else {
                         console.log(JSON.stringify(existinguser));
                         req.user.pacappuserid = existinguser._id;
-                        console.log("after2 set pacappuserid: " + req.user.pacappuserid);
-
-                        ///
+                        console.log("after set pacappuserid: " + req.user.pacappuserid);
                         //pacUserId = existinguser._id;
                         //res.json(existinguser);
                         //     console.log("find existing record with: " + articleStoryId);
@@ -110,10 +89,6 @@ module.exports = function(app) {
                 }
             }); //end lookup storyId and save record if it is a new story
     }
-
-
-
-
 
     app.get('/favorite-places', ensureAuthenticated, function(req, res, next) {
         //res.render('favorite');
@@ -127,8 +102,9 @@ module.exports = function(app) {
                 console.log(err);
             } else {
                 console.log(doc);
-                res.render('my-packs', { pacData });
-
+                res.render('my-packs', {
+                    pacData
+                });
             }
         });
     });
@@ -179,16 +155,17 @@ module.exports = function(app) {
                         email: userwpacs.emailAddress,
                         image: req.user._json.image
                     };
-
-
-                    res.render('account', { userData });
+                    res.render('account', {
+                        userData
+                    });
                 }
             });
     });
 
     app.get('/login', ensureAuthenticated, function(req, res, next) {
-
-        res.render('login', { user: req.user });
+        res.render('login', {
+            user: req.user
+        });
     });
 
     // GET /auth/google
@@ -222,7 +199,9 @@ module.exports = function(app) {
     //Route to send Email
     app.post('/send', function(req, res, next) {
 
-        var query = Place2.findOne({ 'name': 'Nj Ymca State Alliance' });
+        var query = Place2.findOne({
+            'name': 'Nj Ymca State Alliance'
+        });
         var email = req.body.email;
         console.log('email:' + email);
 
@@ -236,12 +215,12 @@ module.exports = function(app) {
 
             console.log('data: ' + map);
             let mapData = {
-                    lat: 'test1',
-                    long: 'test2',
-                    name: 'name',
-                    address: 'address'
-                }
-                //Call function to send email
+                lat: map.lat,
+                long: map.long,
+                name: map.name,
+                address: map.address
+            }
+            //Call function to send email
             sendMail(email, mapData);
         })
 
@@ -249,15 +228,15 @@ module.exports = function(app) {
             var transporter = nodemailer.createTransport({
                 service: 'gmail',
                 auth: {
-                    user: 'ariene.ellefsen@gmail.com',
-                    pass: 'Aladim2017@'
+                    user: 'pacnshare@gmail.com',
+                    pass: 'xf&u6iFXB!3I'
                 }
             });
 
             console.log('name map: ' + mapData.name);
 
             var mailOptions = {
-                from: 'ariene.ellefsen@gmail.com',
+                from: 'pacnshare@gmail.com',
                 to: email,
                 subject: 'You got a Pack!',
                 html: '<h1>Someone just want to share with you some cool pack!</h1><br><h3>' + mapData.name + '</h3><p>' + mapData.address + '</p><br><a href="http://maps.googleapis.com/maps/api/staticmap?size=800x8000&markers=color:red|' + mapData.lat + ',' + mapData.long + '&sensor=false">Click here to open the map </a>'
@@ -272,11 +251,15 @@ module.exports = function(app) {
             });
 
         }
+
         res.redirect('/favorite-places');
+
     });
 
     function ensureAuthenticated(req, res, next) {
-        if (req.isAuthenticated()) { return next(); }
+        if (req.isAuthenticated()) {
+            return next();
+        }
         res.redirect('login.html');
     }
 

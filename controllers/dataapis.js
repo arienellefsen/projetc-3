@@ -205,41 +205,7 @@ apirouter.post("/pac", function(req, res) {
 
         Promise.all(promises).then(() => {
                 console.log("save places done");
-                //var newpac = addPac(req.body.pac, arrayOfPlaceIds, req.body.pac.createdBy)
-                var pac = req.body.pac;
-                    pac.places = arrayOfPlaceIds;
-                     var entry = new Pac(pac);
-
-                        // Now, save that entry to the db
-                        entry.save(function(err, doc) {
-                            if (err) {
-                                console.log(err);
-                                return error
-                            } else {
-                                console.log("new pac doc: " + doc);
-                                console.log(req.body.pac.createdBy);
-                                 // Use the user id to find and update it's pacs
-                                User.findOneAndUpdate({
-                                    "_id":  req.body.pac.createdBy
-                                }, {
-                                    $push: {
-                                        "pacs": doc._id
-                                    }
-                                })
-                                // Execute the above query
-                                .exec(function(err, doc) {
-                                    // Log any errors
-                                    if (err) {
-                                        res.send(err);
-                                        return err
-                                    } else {
-                                         console.log(doc);
-                                        res.send(doc);
-                                    }
-                                });
-                            }
-                        });
-
+                res.json(addPac(req.body.pac, arrayOfPlaceIds, req.body.pac.createdBy));
         })
         .catch((e) => {
               console.log(e);
