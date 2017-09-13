@@ -125,19 +125,19 @@ if (err) {
 }
 });
 
-// // Database configuration with mongoose
-// mongoose.connect("mongodb://heroku_4c80hglr:ctpgelbtcm86l2vuut6040o7q2@ds135364.mlab.com:35364/heroku_4c80hglr");
-// var db = mongoose.connection;
+// Database configuration with mongoose
+mongoose.connect("mongodb://heroku_4c80hglr:ctpgelbtcm86l2vuut6040o7q2@ds135364.mlab.com:35364/heroku_4c80hglr");
+var db = mongoose.connection;
 
-// // Show any mongoose errors
-// db.on("error", function(error) {
-//     console.log("Mongoose Error: ", error);
-// });
+// Show any mongoose errors
+db.on("error", function(error) {
+    console.log("Mongoose Error: ", error);
+});
 
-// // Once logged in to the db through mongoose, log a success message
-// db.once("open", function() {
-//     console.log("Mongoose connection successful.");
-// });
+// Once logged in to the db through mongoose, log a success message
+db.once("open", function() {
+    console.log("Mongoose connection successful.");
+});
 
 //Create server
 app.listen(PORT, function() {
