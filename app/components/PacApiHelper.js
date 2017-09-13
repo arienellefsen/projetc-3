@@ -53,7 +53,7 @@ export default {
 //used in ProcEditor
   getPocById: function(id) {
     console.log("getPocById:" + id);
-    return axios.get('${BASE_URL}/pacs/${id}')
+    return axios.get('http://localhost:3000/pacs/'+id)
       .then(function (response) {
           console.log("-------------------get getPocById return: ");
           console.log(JSON.stringify(response));
@@ -69,13 +69,6 @@ export default {
     return axios.post('http://localhost:3000/api/pac', {
       pac: pac
     }).then(function (response) {
-/*        console.log("-------------------post new pac return: ");
-        console.log(JSON.stringify(response));
-        return axios.get('http://localhost:3000/api/pacs/59b7143e01cf9033a4a3982b').then(function (response) {
-                   console.log("------------------get user's pacs return: ")
-                    console.log(JSON.stringify(response));
-                    return response.data;
-          });*/
            console.log(JSON.stringify(response));
           return response.data;
     }).catch(function (error) {

@@ -17,78 +17,11 @@ module.exports = function(app) {
             logStatus = {
                 logStatus: isLog
             };
-            //check existing user or not
-            //Register new user
-            console.log("to check pacappuserid: " + req.user.pacappuserid);
-            if (!req.user.pacappuserid) {
-                req.user.pacappuserid = getPacUserId(req);
-            }
+
             res.render('dashboard', logStatus);
         }
     });
 
-    function getPacUserInfoFromGmailAcct(userGmailAcctInfo) {
-        var emailAddress = "";
-
-        var emailcnt = userGmailAcctInfo.emails.length;
-        if (emailcnt > 0)
-            emailAddress = userGmailAcctInfo.emails[0].value;
-
-        var pacUser = {
-            firstName: userGmailAcctInfo.name.givenName ? userGmailAcctInfo.name.givenName : "FristName",
-            lastName: userGmailAcctInfo.name.familyName ? userGmailAcctInfo.name.familyName : "LastName",
-            emailAddress: emailAddress
-        };
-
-        return pacUser;
-    }
-
-    function getPacUserId(req) {
-        var pacUser = getPacUserInfoFromGmailAcct(req.user._json);
-        console.log(pacUser);
-        var pacUserId = null;
-        User.findOne({
-                emailAddress: pacUser.emailAddress
-            }) // ..and populate all of the pacs for the user
-            .populate({
-                path: "pacs",
-                options: {
-                    sort: [{
-                        "createdAt": -1
-                    }]
-                }
-            }).exec(function(error, existinguser) {
-                if (error) {
-                    console.log(error);
-                } else {
-                    if (!existinguser) { //cannot use existinguser.length===0 for findOne function
-                        //save the User
-                        // Using our User model, create a new entry
-                        // This effectively passes the result object to the entry
-                        var entry = new User(pacUser);
-
-                        // Now, save that entry to the db
-                        entry.save(function(err, newuser) {
-                            if (err) {
-                                console.log(err);
-                            } else {
-                                console.log(JSON.stringify(newuser));
-                                req.user.pacappuserid = newuser._id;
-                                console.log("after set pacappuserid: " + req.user.pacappuserid);
-                                //pacUserId = newuser._id;
-                            }
-                        });
-                    } else {
-                        console.log(JSON.stringify(existinguser));
-                        req.user.pacappuserid = existinguser._id;
-                        console.log("after set pacappuserid: " + req.user.pacappuserid);
-                        //pacUserId = existinguser._id;
-                        //res.json(existinguser);
-                        //     console.log("find existing record with: " + articleStoryId);
-                    }
-                }
-            }); //end lookup storyId and save record if it is a new story
-    }
 
     app.get('/favorite-places', ensureAuthenticated, function(req, res, next) {
         //res.render('favorite');
@@ -107,9 +40,8 @@ module.exports = function(app) {
                 });
             }
         });*/
-            var pacUser = getPacUserInfoFromGmailAcct(req.user._json);
             User.findOne({
-                emailAddress: pacUser.emailAddress
+                _id: req.user.pacappuserid
             }) // ..and populate all of the pacs for the user
             .populate({
                 path: "pacs",
@@ -149,14 +81,10 @@ module.exports = function(app) {
 
     //Route account page
     app.get('/account', ensureAuthenticated, function(req, res, next) {
-        /* Not working!    not able to set req.user.pacappuserid
-                if(!req.user.pacappuserid){
-                    req.user.pacappuserid = getPacUserId(req);
-                }*/
-        var pacUser = getPacUserInfoFromGmailAcct(req.user._json);
+
         User.findOne({
                 //"_id": req.user.pacappuserid
-                emailAddress: pacUser.emailAddress
+                _id: req.user.pacappuserid
             })
             .populate({
                 path: "pacs",
@@ -288,9 +216,74 @@ module.exports = function(app) {
 
     function ensureAuthenticated(req, res, next) {
         if (req.isAuthenticated()) {
+            //check existing user or not
+            //Register new user
+            console.log("to check pacappuserid: " + req.user.pacappuserid);
+            if (!req.user.pacappuserid) {
+                req.user.pacappuserid = getPacUserId(req);
+            }
             return next();
         }
         res.redirect('login.html');
+    }
+
+    function getPacUserInfoFromGmailAcct(userGmailAcctInfo) {
+        var emailAddress = "";
+
+        var emailcnt = userGmailAcctInfo.emails.length;
+        if (emailcnt > 0)
+            emailAddress = userGmailAcctInfo.emails[0].value;
+
+        var pacUser = {
+            firstName: userGmailAcctInfo.name.givenName ? userGmailAcctInfo.name.givenName : "FristName",
+            lastName: userGmailAcctInfo.name.familyName ? userGmailAcctInfo.name.familyName : "LastName",
+            emailAddress: emailAddress
+        };
+
+        return pacUser;
+    }
+
+    function getPacUserId(req) {
+        var pacUser = getPacUserInfoFromGmailAcct(req.user._json);
+        console.log(pacUser);
+
+        User.findOne({
+                emailAddress: pacUser.emailAddress
+            }) // ..and populate all of the pacs for the user
+            .populate({
+                path: "pacs",
+                options: {
+                    sort: [{
+                        "createdAt": -1
+                    }]
+                }
+            }).exec(function(error, existinguser) {
+                if (error) {
+                    console.log(error);
+                } else {
+                    if (!existinguser) { //cannot use existinguser.length===0 for findOne function
+                        //save the User
+                        // Using our User model, create a new entry
+                        // This effectively passes the result object to the entry
+                        var entry = new User(pacUser);
+
+                        // Now, save that entry to the db
+                        entry.save(function(err, newuser) {
+                            if (err) {
+                                console.log(err);
+                            } else {
+                                console.log(JSON.stringify(newuser));
+                                req.user.pacappuserid = newuser._id;
+                                console.log("after set pacappuserid: " + req.user.pacappuserid);
+                            }
+                        });
+                    } else {
+                        console.log(JSON.stringify(existinguser));
+                        req.user.pacappuserid = existinguser._id;
+                        console.log("after set pacappuserid: " + req.user.pacappuserid);
+                    }
+                }
+            }); 
     }
 
 };

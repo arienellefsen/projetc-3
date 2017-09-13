@@ -196,7 +196,7 @@ apirouter.get("/places/:id", function(req, res) {
 //Note: no unique check if update a pac have to use the post pocs/:id
 apirouter.post("/pac", function(req, res) {
         console.log("add: " + JSON.stringify(req.body.pac));
-        console.log("to: " + req.body.pac.createdBy);
+        console.log("to: " + req.user.pacappuserid);
         var arrayOfPlaceIds = [];
         var promises = [];
         for(var placeIndex in req.body.pac.places){
@@ -208,6 +208,9 @@ apirouter.post("/pac", function(req, res) {
                 //var newpac = addPac(req.body.pac, arrayOfPlaceIds, req.body.pac.createdBy)
                 var pac = req.body.pac;
                     pac.places = arrayOfPlaceIds;
+                    pac.category = "place";
+                    pac.pictureURL = "";
+                    pac.createdBy = req.user.pacappuserid;
                      var entry = new Pac(pac);
 
                         // Now, save that entry to the db
@@ -217,10 +220,9 @@ apirouter.post("/pac", function(req, res) {
                                 return error
                             } else {
                                 console.log("new pac doc: " + doc);
-                                console.log(req.body.pac.createdBy);
                                  // Use the user id to find and update it's pacs
                                 User.findOneAndUpdate({
-                                    "_id":  req.body.pac.createdBy
+                                    "_id":  pac.createdBy
                                 }, {
                                     $push: {
                                         "pacs": doc._id

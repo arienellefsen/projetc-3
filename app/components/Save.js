@@ -7,7 +7,7 @@ class Save extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-        pacId: null,
+        pacId: null
     };
     // this.savePac = this.savePac.bind(this);
     this.handleSavePac = this.handleSavePac.bind(this);
@@ -40,10 +40,7 @@ class Save extends React.Component {
 
   handleSavePac(){
     var pac = {
-            title: this.props.title,
-            pictureURL: "",
-            category: "place",
-            createdBy: "59b7a8aae752690e4841dc73"
+            title: this.props.title
     };
     console.log('call handleSavePac' + JSON.stringify(this.props.places));
 
@@ -56,13 +53,13 @@ class Save extends React.Component {
         "address": place.formatted_address,
         "city": "",
         "state": "",
-        "zipcode": "10065",
-        "country": "USA",
+        "zipcode": "",
+        "country": "",
         "officialWebsite": "http://www.centralparknyc.org/",
-        "googlePlaceId": "ChIJ4zGFAZpYwokRGUGph3Mf37k"};
+        "googlePlaceId": place.place_id
+      };
       addedPlaces.push(pacplace);
     });
-
     pac.places = addedPlaces;
 
     console.log('call handleSavePac' + JSON.stringify(pac));

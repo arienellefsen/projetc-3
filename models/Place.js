@@ -38,8 +38,7 @@ var PlaceSchema = new Schema({
         type: String
     },
     country: {
-        type: String,
-        required: true
+        type: String
     },
     officialWebsite: {
         type: String
