@@ -114,7 +114,7 @@ app.use('/api', apirouter);
 // localhost if we don't find one.
 //var dburistring = process.env.MONGODB_URI || process.env.MONGOHQ_URL || 'mongodb://localhost/pacs';
 
-var dburistring = "mongodb://heroku_4c80hglr:ctpgelbtcm86l2vuut6040o7q2@ds135364.mlab.com:35364/heroku_4c80hglr"
+var dburistring = "mongodb://ariene-test:test123@ds135364.mlab.com:35364/ariene-test";
 // Makes connection asynchronously.  Mongoose will queue up database
 // operations and release them when the connection is complete.
 mongoose.connect(dburistring, function(err, res) {
