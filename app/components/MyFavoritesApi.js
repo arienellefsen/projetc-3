@@ -8,14 +8,14 @@ import axios from "axios";
 export default {
   getMyFavorites: function(id) {
     console.log("getMyFavorites:" + id);
-    return axios.post('http://localhost:3000/api/user', {user:{
+    return axios.post('/api/user', {user:{
         firstName: 'Xiaoying',
         lastName: 'Wen',
         emailAddress: 'xiaoying@a.com'}
     }).then(function (response) {
           console.log(JSON.stringify(response));
           var userId = response.data._id;
-          return axios.get('http://localhost:3000/api/users/' + userId + '/pacs').then(function (response) {
+          return axios.get('/api/users/' + userId + '/pacs').then(function (response) {
             console.log(JSON.stringify(response));
             return response.data
           });
@@ -25,7 +25,7 @@ export default {
   },
 
   addUser: function(user){
-    return axios.post('http://localhost:3000/api/user', {
+    return axios.post('/api/user', {
               user:{    firstName: "xiaoying",
                         lastName: "wen",
                         emailAddress: "xiaoyingwen@a.com"
@@ -47,7 +47,7 @@ export default {
 
 
   addMyFavoritePlace: function(id, place) {
-    return axios.post('http://localhost:3000/api/pac', {
+    return axios.post('/api/pac', {
       pac:{
             title: "NY City",
             pictureURL:"http://www.nationalgeographic.com/content/dam/travel/photos/000/023/2358.ngsversion.1496844025740.adapt.352.1.jpg",
@@ -92,7 +92,7 @@ export default {
   },
 
     updateMyFavoritePlace: function(id, place) {
-    return axios.put('http://localhost:3000/api/pac', {
+    return axios.put('/api/pac', {
       pac:{
             title: "City Zoo",
             pictureURL:"http://www.nationalgeographic.com/content/dam/travel/photos/000/023/2358.ngsversion.1496844025740.adapt.352.1.jpg",
@@ -127,7 +127,7 @@ export default {
       id: "59b4cd446b49a48dfc38eb1a"
     }).then(function (response) {
           console.log(JSON.stringify(response));
-          return axios.get('http://localhost:3000/api/users/' + response.createdBy
+          return axios.get('/api/users/' + response.createdBy
             +'/pacs').then(function (userpacs) {
                           console.log("userpacs");
             console.log(JSON.stringify(userpacs));

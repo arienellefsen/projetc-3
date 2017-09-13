@@ -5,7 +5,7 @@
 
 import axios from "axios";
 
-const BASE_URL = "http://localhost:3000/api";
+const BASE_URL = "/api";
 const LOGPRE = "PacApiHelper.";
 
 export default {
@@ -30,14 +30,14 @@ export default {
 
 
   addUser: function(user){
-    return axios.post('http://localhost:3000/api/user', {
+    return axios.post('/api/user', {
               user:{    firstName: "xiaoying",
                         lastName: "wen",
                         emailAddress: "xiaoyingwen@a.com"
               }
             }).then(function (response) {
                 console.log(JSON.stringify(response));
-                return axios.get('http://localhost:3000/api/users/'
+                return axios.get('/api/users/'
                 + response._id
                 +'/pacs').then(function (response) {
                             console.log(JSON.stringify(response));
@@ -53,7 +53,7 @@ export default {
 //used in ProcEditor
   getPocById: function(id) {
     console.log("getPocById:" + id);
-    return axios.get('http://localhost:3000/pacs/'+id)
+    return axios.get('/pacs/'+id)
       .then(function (response) {
           console.log("-------------------get getPocById return: ");
           console.log(JSON.stringify(response));
@@ -66,7 +66,7 @@ export default {
 
 //used in ProcEditor
   addPac: function(pac) {
-    return axios.post('http://localhost:3000/api/pac', {
+    return axios.post('/api/pac', {
       pac: pac
     }).then(function (response) {
            console.log(JSON.stringify(response));
@@ -78,7 +78,7 @@ export default {
 
   //used in ProcEditor
   updatePac: function(pac) {
-    return axios.put('http://localhost:3000/pac', {
+    return axios.put('/pac', {
       pac: pac
     }).then(function (response) {
         console.log("-------------------put existing pac return: ");
