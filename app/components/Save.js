@@ -1,4 +1,5 @@
 import React from 'react';
+import PacApiHelper from "./PacApiHelper";
 const helpers = require("./utils/helpers");
 
 
@@ -6,7 +7,11 @@ class Save extends React.Component {
    
   constructor(props) {
     super(props);
-    this.savePac = this.savePac.bind(this);
+/*    this.savePac = this.savePac.bind(this);*/
+    this.state = {
+            pacid: null,
+    };
+    this.handleSavePac = this.handleSavePac.bind(this);
   }
 
   componentDidUpdate() {
@@ -15,7 +20,7 @@ class Save extends React.Component {
 
   }
 
-  savePac(){
+/*  savePac(){
     var addedPlaces = this.props.places;
     this.props.places.map((place, index) => {
       let address = place.formatted_address;
@@ -33,11 +38,68 @@ class Save extends React.Component {
       helpers.savePac(placeName, address, placeId, lat, long);
     })
   }
+*/
+  handleSavePac(){
+    var pac = {
+            _id: null,
+            title: "my pac",
+            pictureURL: "",
+            places:[],
+            category: "place",
+            createdBy: "59b7a8aae752690e4841dc73"
+    };
+    console.log('call handleSavePac' + JSON.stringify(this.props.places));
+
+    var addedPlaces = [];
+    this.props.places.map((place, index) => {
+      var pacplace={
+        "name": place.name,
+        "lat": place.geometry.location.lat(),
+        "lng": place.geometry.location.lng(),
+        "address": place.formatted_address,
+        "city": "",
+        "state": "",
+        "zipcode": "10065",
+        "country": "USA",
+        "officialWebsite": "http://www.centralparknyc.org/",
+        "googlePlaceId": "ChIJ4zGFAZpYwokRGUGph3Mf37k"};
+      addedPlaces.push(pacplace);
+    });
+
+    pac.places = addedPlaces;
+
+    console.log('call handleSavePac' + JSON.stringify(pac));
+    if(this.state.pocId != null) {
+      console.log('call update handleSavePac' + JSON.stringify(pac));
+      PacApiHelper.updatePac(pac)
+        .then(data => {
+         console.log("get updated pac is: -----------------" );
+                console.log(JSON.stringify(data));
+
+          console.log("updated pac is: -----------------" );
+          console.log(this.state);
+      });
+    }
+    else {
+      console.log('call save new handleSavePac' + JSON.stringify(pac));
+      PacApiHelper.addPac(pac)
+        .then(data => {   
+         console.log("get saved new pac is: -----------------" );
+                console.log(JSON.stringify(data));
+          
+          this.setState(prevState => ({
+            pacid: data._id
+          }));
+          console.log("saved pac is: -----------------" );
+          console.log(this.state);
+      });
+    }  
+  }
 
   render() {
     return (
       <div>
-        <button onClick={this.savePac} className="save-btn" data-toggle="modal" data-target="#myModal"> Save Pack </button>
+        <button onClick={this.handleSavePac} className="save-btn" data-toggle="modal" data-target="#myModal"> Save Pack </button>
      </div>
     
     );
