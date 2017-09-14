@@ -4,8 +4,7 @@
  */
 
 import axios from "axios";
-
-const BASE_URL = "/api";
+//"http://localhost:5000";
 const LOGPRE = "PacApiHelper.";
 
 export default {
@@ -50,10 +49,10 @@ export default {
               });
   },
 
-//used in ProcEditor
+
   getPocById: function(id) {
     console.log("getPocById:" + id);
-    return axios.get('/pacs/'+id)
+    return axios.get('/api/pacs/'+id)
       .then(function (response) {
           console.log("-------------------get getPocById return: ");
           console.log(JSON.stringify(response));
@@ -64,7 +63,7 @@ export default {
       });
   },
 
-//used in ProcEditor
+
   addPac: function(pac) {
     return axios.post('/api/pac', {
       pac: pac
@@ -76,9 +75,9 @@ export default {
     });
   },
 
-  //used in ProcEditor
+
   updatePac: function(pac) {
-    return axios.put('/pac', {
+    return axios.put('/api/pac', {
       pac: pac
     }).then(function (response) {
         console.log("-------------------put existing pac return: ");
