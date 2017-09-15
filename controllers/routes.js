@@ -24,13 +24,19 @@ module.exports = function(app) {
 
 
     app.get('/favorite-places', ensureAuthenticated, function(req, res, next) {
-        //res.render('favorite');
+        var emailAddress = "";
+        var emailcnt = req.user._json.emails.length;
+        if (emailcnt > 0)
+            emailAddress = req.user._json.emails[0].value;
+
         User.findOne({
-                _id: req.user.pacappuserid
+                emailAddress: emailAddress
             }) // ..and populate all of the pacs for the user
             .populate({
                 path: "pacs",
-                populate: { path: 'places' },
+                populate: {
+                    path: 'places'
+                },
                 options: {
                     sort: [{
                         "createdAt": -1
@@ -45,16 +51,20 @@ module.exports = function(app) {
                         let pacData = {
                             pac: doc
                         }
-                        res.render('my-packs', { pacData });
+                        res.render('my-packs', {
+                            pacData
+                        });
                     } else {
                         console.log(JSON.stringify(existinguser));
                         let pacData = {
                             pac: existinguser.pacs
                         }
-                        res.render('my-packs', { pacData });
+                        res.render('my-packs', {
+                            pacData
+                        });
                     }
                 }
-            }); //end lookup storyId and save record if it is a new story
+            }); 
     });
 
     app.get('/my-pacs', ensureAuthenticated, function(req, res, next) {
@@ -67,22 +77,14 @@ module.exports = function(app) {
 
     //Route account page
     app.get('/account', ensureAuthenticated, function(req, res, next) {
+        var emailAddress = "";
+        var emailcnt = req.user._json.emails.length;
+        if (emailcnt > 0)
+            emailAddress = req.user._json.emails[0].value;
 
         User.findOne({
-                //"_id": req.user.pacappuserid
-                _id: req.user.pacappuserid
+                emailAddress: emailAddress
             })
-            .populate({
-                path: "pacs",
-                // Get places of pacs - populate the 'places' array for every pac
-                // populate: { path: 'places' },
-                options: {
-                    sort: [{
-                        "createdAt": -1
-                    }]
-                }
-            })
-            // now, execute our query
             .exec(function(error, userwpacs) {
                 // Log any errors
                 if (error) {
@@ -159,12 +161,12 @@ module.exports = function(app) {
 
             console.log('data: ' + map);
             let mapData = {
-                    lat: 'lat',
-                    long: 'long',
-                    name: 'name',
-                    address: 'address'
-                }
-                //Call function to send email
+                lat: 'lat',
+                long: 'long',
+                name: 'name',
+                address: 'address'
+            }
+            //Call function to send email
             sendMail(email, mapData);
         })
 
@@ -172,8 +174,8 @@ module.exports = function(app) {
             var transporter = nodemailer.createTransport({
                 service: 'gmail',
                 auth: {
-                    user: 'ariene.ellefsen@gmail.com',
-                    pass: 'Aladim2017@'
+                    user: 'xiaoyingwen@gmail.com',
+                    pass: 'f*m5p&haL'
                 }
             });
 
@@ -206,7 +208,7 @@ module.exports = function(app) {
             //Register new user
             console.log("to check pacappuserid: " + req.user.pacappuserid);
             if (!req.user.pacappuserid) {
-                req.user.pacappuserid = getPacUserId(req);
+                setPacUserId(req);
             }
             return next();
         }
@@ -229,21 +231,14 @@ module.exports = function(app) {
         return pacUser;
     }
 
-    function getPacUserId(req) {
+    function setPacUserId(req) {
         var pacUser = getPacUserInfoFromGmailAcct(req.user._json);
         console.log(pacUser);
 
         User.findOne({
                 emailAddress: pacUser.emailAddress
-            }) // ..and populate all of the pacs for the user
-            .populate({
-                path: "pacs",
-                options: {
-                    sort: [{
-                        "createdAt": -1
-                    }]
-                }
-            }).exec(function(error, existinguser) {
+            }) 
+            .exec(function(error, existinguser) {
                 if (error) {
                     console.log(error);
                 } else {

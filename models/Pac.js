@@ -21,8 +21,7 @@ var PacSchema = new Schema({
         ref: "Place"
     }], 
     createdBy: {
-        type: Schema.Types.ObjectId,
-        ref: "User",
+        type: String,
         required: true
     },
     comments: [{
