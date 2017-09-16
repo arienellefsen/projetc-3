@@ -340,12 +340,11 @@ function addPac(pac, placeIds, userid) {
 // pac id required in req
 apirouter.put("/pac", function(req, res) {
     console.log("update: " + JSON.stringify(req.body.pac));
-    console.log("update: " + JSON.stringify(req.body.id));
     var updatedPac = req.body.pac;
     var arrayOfPlaceIds = [];
     var promises = [];
 
-    Pac.findById(req.body.id, function(err, pac) {
+    Pac.findById(updatedPac._id, function(err, pac) {
         if (err) {
             res.send(err);
         } else {
