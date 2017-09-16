@@ -13,8 +13,8 @@ PORT = process.env.PORT || 3000;
 
 // API Access link for creating client ID and secret:
 // https://code.google.com/apis/console/
-const GOOGLE_CLIENT_ID = "250337484083-nt77d1ism43vtfpmg58oj5rr51g4gj3m.apps.googleusercontent.com",
-GOOGLE_CLIENT_SECRET = "nX4Z13iFtfH7aKAbmky8FIdd";
+const GOOGLE_CLIENT_ID = "319083739424-co5ollte0dclmg00spkhg111c3l8bah4.apps.googleusercontent.com",
+GOOGLE_CLIENT_SECRET = "QvJTj_l8BgVGrqZjnSxDyp5M";
 
 var mongoose = require("mongoose");
 // Set mongoose to leverage built in JavaScript ES6 Promises
@@ -46,7 +46,7 @@ done(null, obj);
 passport.use(new GoogleStrategy({
     clientID: GOOGLE_CLIENT_ID,
     clientSecret: GOOGLE_CLIENT_SECRET,
-    callbackURL: "https://pacnshare.herokuapp.com/auth/google/callback",
+    callbackURL: "http://localhost:3000/auth/google/callback",
     passReqToCallback: true
 },
 
@@ -111,13 +111,13 @@ app.use('/api', apirouter);
 // Database configuration with mongoose
 // Here we find an appropriate database to connect to, defaulting to
 // localhost if we don't find one.
-//var dburistring = process.env.MONGODB_URI || process.env.MONGOHQ_URL || 'mongodb://localhost/pacs';
+var dburistring = process.env.MONGODB_URI || process.env.MONGOHQ_URL || 'mongodb://localhost/pacs';
 
 // // MongoDB Configuration
 // mongoose.connect("mongodb://heroku_4c80hglr:ctpgelbtcm86l2vuut6040o7q2@ds135364.mlab.com:35364/heroku_4c80hglr");
 // const db = mongoose.connection;
 
-var promise = mongoose.connect('mongodb://kalpana:kalpana@ds135364.mlab.com:35364/heroku_4c80hglr', {
+var promise = mongoose.connect(dburistring, {
   useMongoClient: true,
   /* other options */
 });
