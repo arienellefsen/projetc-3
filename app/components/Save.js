@@ -61,6 +61,7 @@ class Save extends React.Component {
       addedPlaces.push(pacplace);
     });
     pac.places = addedPlaces;
+    pac._id = this.state.pacId;
 
     console.log('call handleSavePac' + JSON.stringify(pac));
     if(this.state.pacId != null) {
