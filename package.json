@@ -4,7 +4,7 @@
   "description": "Add your favorite places in one single app to share with your friends using gmail account ",
   "main": "app.js",
   "dependencies": {
-    "axios": "^0.12.0",
+    "axios": "^0.18.1",
     "body-parser": "^1.15.2",
     "cookie-parser": "^1.4.3",
     "connect-redis": "^3.3.0",
